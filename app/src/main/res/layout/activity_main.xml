@@ -1,34 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#4CAF50"
+    android:padding="20dp">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.EatGreen.AppBarOverlay">
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_restaurant"
+            app:tint="#FFFFFF"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EatGreen"
+            android:textColor="#FFFFFF"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bienvenue sur l'application"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_marginBottom="40dp"/>
+
+        <!-- Bouton pour étudiants -->
+        <Button
+            android:id="@+id/btnEtudiant"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.EatGreen.PopupOverlay" />
+            android:layout_height="60dp"
+            android:text="👨‍🎓 Inscription Étudiant"
+            android:textColor="#4CAF50"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FFFFFF"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_person"
+            app:iconGravity="textStart"
+            app:iconTint="#4CAF50"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <!-- Bouton pour administrateurs -->
+        <Button
+            android:id="@+id/btnAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="👔 Inscription Administrateur"
+            android:textColor="#4CAF50"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FFFFFF"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_person"
+            app:iconGravity="textStart"
+            app:iconTint="#4CAF50"/>
 
-    <include layout="@layout/content_main" />
+        <!-- Bouton pour restaurateurs -->
+        <Button
+            android:id="@+id/btnRestaurateur"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="🍽️ Inscription Restaurateur"
+            android:textColor="#4CAF50"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FFFFFF"
+            android:layout_marginBottom="30dp"
+            app:icon="@drawable/ic_restaurant"
+            app:iconGravity="textStart"
+            app:iconTint="#4CAF50"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <!-- Lien vers connexion -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Déjà un compte ? "
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Se connecter"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,10 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:background="#4CAF50">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- En-tête avec retour -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:id="@+id/header">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connexion"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <!-- Logo / Titre -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EatGreen"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:fontFamily="sans-serif-light"/>
+
+    <!-- Formulaire de connexion -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:padding="24dp"
+        android:elevation="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bienvenue !"
+            android:textColor="#333333"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Champ Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint=" Adresse email"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="#4CAF50"
+            app:hintTextColor="#4CAF50"
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="#4CAF50"
+            app:startIconContentDescription="Icône email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:paddingStart="45dp"
+                android:paddingEnd="12dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Champ Mot de passe -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint=" Mot de passe"
+            android:layout_marginBottom="8dp"
+            app:boxStrokeColor="#4CAF50"
+            app:hintTextColor="#4CAF50"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="#4CAF50"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#4CAF50"
+            app:startIconContentDescription="Icône cadenas">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:paddingStart="45dp"
+                android:paddingEnd="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Mot de passe oublié -->
+        <TextView
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mot de passe oublié ?"
+            android:textColor="#4CAF50"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="end"/>
+
+        <!-- Bouton Connexion -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="SE CONNECTER"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Lien vers inscription -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pas encore de compte ? "
+                android:textColor="#666666"/>
+
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S'inscrire"
+                android:textColor="#4CAF50"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
