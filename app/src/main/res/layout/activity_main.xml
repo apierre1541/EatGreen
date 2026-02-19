@@ -13,11 +13,12 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Logo / Titre -->
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_restaurant"
-            app:tint="#FFFFFF"
+            android:tint="#FFFFFF"
             android:layout_marginBottom="20dp"/>
 
         <TextView
@@ -37,74 +38,34 @@
             android:textSize="18sp"
             android:layout_marginBottom="40dp"/>
 
-        <!-- Bouton pour étudiants -->
+        <!-- Bouton Connexion -->
         <Button
-            android:id="@+id/btnEtudiant"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="👨‍🎓 Inscription Étudiant"
+            android:text="Se connecter"
             android:textColor="#4CAF50"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:backgroundTint="#FFFFFF"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="20dp"
+            app:icon="@drawable/ic_lock"
+            app:iconGravity="textStart"
+            app:iconTint="#4CAF50"/>
+
+        <!-- Bouton Inscription -->
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="S'inscrire"
+            android:textColor="#4CAF50"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FFFFFF"
             app:icon="@drawable/ic_person"
             app:iconGravity="textStart"
             app:iconTint="#4CAF50"/>
 
-        <!-- Bouton pour administrateurs -->
-        <Button
-            android:id="@+id/btnAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="👔 Inscription Administrateur"
-            android:textColor="#4CAF50"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#FFFFFF"
-            android:layout_marginBottom="16dp"
-            app:icon="@drawable/ic_person"
-            app:iconGravity="textStart"
-            app:iconTint="#4CAF50"/>
-
-        <!-- Bouton pour restaurateurs -->
-        <Button
-            android:id="@+id/btnRestaurateur"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="🍽️ Inscription Restaurateur"
-            android:textColor="#4CAF50"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#FFFFFF"
-            android:layout_marginBottom="30dp"
-            app:icon="@drawable/ic_restaurant"
-            app:iconGravity="textStart"
-            app:iconTint="#4CAF50"/>
-
-        <!-- Lien vers connexion -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Déjà un compte ? "
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Se connecter"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="5dp"/>
-        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

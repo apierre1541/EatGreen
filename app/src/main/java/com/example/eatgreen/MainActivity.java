@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnEtudiant, btnAdmin, btnRestaurateur;
-    private TextView tvLogin;
+    private Button btnLogin, btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,48 +21,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        btnEtudiant = findViewById(R.id.btnEtudiant);
-        btnAdmin = findViewById(R.id.btnAdmin);
-        btnRestaurateur = findViewById(R.id.btnRestaurateur);
-        tvLogin = findViewById(R.id.tvLogin);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
     }
 
     private void setupListeners() {
-        // Redirection vers RegisterActivity avec le rôle étudiant
-        btnEtudiant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                intent.putExtra("role", "etudiant");
-                startActivity(intent);
-            }
-        });
-
-        // Redirection vers RegisterActivity avec le rôle admin
-        btnAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                intent.putExtra("role", "admin");
-                startActivity(intent);
-            }
-        });
-
-        // Redirection vers RegisterActivity avec le rôle restaurateur
-        btnRestaurateur.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                intent.putExtra("role", "restaurateur");
-                startActivity(intent);
-            }
-        });
-
-        // Redirection vers connexion
-        tvLogin.setOnClickListener(new View.OnClickListener() {
+        // Redirection vers la page de connexion
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Redirection vers la page d'inscription
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
