@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     role ENUM('etudiant', 'admin', 'restaurateur') NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
     date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_validation DATETIME NULL, 
+    date_validation TIMESTAMP NULL DEFAULT NULL, 
     INDEX(email)
 );
 
