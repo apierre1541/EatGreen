@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paiement par Carte Bancaire"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="30dp"/>
+
+    <EditText
+        android:id="@+id/etNumCarte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numéro de carte (16 chiffres)"
+        android:inputType="number"
+        android:maxLength="16"
+        android:layout_marginBottom="15dp"/>
+
+    <EditText
+        android:id="@+id/etDateExp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date d'expiration (MM/AA)"
+        android:inputType="date"
+        android:layout_marginBottom="15dp"/>
+
+    <EditText
+        android:id="@+id/etCvv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Code (3 chiffres au dos)"
+        android:inputType="number"
+        android:maxLength="3"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/btnEnregistrerCB"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Enregistrer la carte"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

@@ -34,6 +34,12 @@
         <activity android:name=".RestaurantActivity" />
         <activity android:name=".AdminActivity" />
         <activity android:name=".EtudiantActivity" />
+        <activity android:name=".EditerProfilEtudiantActivity" />
+        <activity android:name=".ModifierRestoActivity" />
+        <activity android:name=".CbActivity" />
+        <activity android:name=".PaypalActivity" />
+        <activity android:name=".GestionUtilisateursActivity" />
+        <activity android:name=".ModifierUserActivity" />
     </application>
 
 </manifest>

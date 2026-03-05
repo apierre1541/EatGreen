@@ -6,13 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminActivity extends AppCompatActivity {
 
     private TextView tvWelcome, tvEmail;
-    private Button btnDeconnexion;
+    private Button btnDeconnexion, btnEditerProfil, btnGestionUtilisateurs, btnPotager, btnStats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +27,10 @@ public class AdminActivity extends AppCompatActivity {
         tvWelcome = findViewById(R.id.tvWelcome);
         tvEmail = findViewById(R.id.tvEmail);
         btnDeconnexion = findViewById(R.id.btnDeconnexion);
+        btnEditerProfil = findViewById(R.id.btnEditerProfil);
+        btnGestionUtilisateurs = findViewById(R.id.btnGestionUtilisateurs);
+        btnPotager = findViewById(R.id.btnPotager);
+        btnStats = findViewById(R.id.btnStatsGlobales);
     }
 
     private void displayUserInfo() {
@@ -49,17 +52,28 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btnDeconnexion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
+        // Redirection vers la Gestion (La page verte de ton schéma)
+        btnGestionUtilisateurs.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, GestionUtilisateursActivity.class);
+            startActivity(intent);
         });
+
+        // Redirection vers l'Édition Profil
+        btnEditerProfil.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, ModifierUserActivity.class);
+            startActivity(intent);
+        });
+
+        // Déconnexion
+        btnDeconnexion.setOnClickListener(v -> logout());
+
+        // Boutons Potager et Stats (Visuels uniquement, comme demandé)
+        btnPotager.setOnClickListener(v -> Toast.makeText(this, "Fonctionnalité à venir", Toast.LENGTH_SHORT).show());
+        btnStats.setOnClickListener(v -> Toast.makeText(this, "Fonctionnalité à venir", Toast.LENGTH_SHORT).show());
     }
 
     private void logout() {
         Toast.makeText(AdminActivity.this, "Déconnexion réussie", Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
