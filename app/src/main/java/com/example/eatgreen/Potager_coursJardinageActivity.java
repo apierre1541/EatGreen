@@ -1,6 +1,6 @@
-package com.example.eatgreentest;
+package com.example.eatgreen;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,15 +12,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity7 extends AppCompatActivity {
+public class Potager_coursJardinageActivity extends AppCompatActivity {
 
     private EditText etDate;
     private CalendrierFragment calendrierFragment;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main7);
+        setContentView(R.layout.activity_potager_cours_jardinage);
 
         etDate = findViewById(R.id.et_date);
 
@@ -53,7 +54,7 @@ public class MainActivity7 extends AppCompatActivity {
                                 simulerClicSurJour(jour, mois, annee);
                             }
                         } catch (NumberFormatException e) {
-                            Toast.makeText(MainActivity7.this,
+                            Toast.makeText(Potager_coursJardinageActivity.this,
                                     "Format incorrect. Utilisez JJ/MM/AAAA",
                                     Toast.LENGTH_SHORT).show();
                         }
