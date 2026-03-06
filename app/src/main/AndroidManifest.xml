@@ -40,6 +40,8 @@
         <activity android:name=".PaypalActivity" />
         <activity android:name=".GestionUtilisateursActivity" />
         <activity android:name=".ModifierUserActivity" />
+        <activity android:name=".Potager_coursJardinageActivity" />
+        <activity android:name=".BoutonActivity" />
     </application>
 
 </manifest>
