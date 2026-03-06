@@ -43,7 +43,13 @@ public class EtudiantActivity extends AppCompatActivity {
     private void setupListeners() {
         // 1. Gestion des 4 boutons centraux
         btnPreference.setOnClickListener(v -> Toast.makeText(this, "Préférence Alimentaire", Toast.LENGTH_SHORT).show());
-        btnProgramme.setOnClickListener(v -> Toast.makeText(this, "Programme Unilimbio", Toast.LENGTH_SHORT).show());
+        btnProgramme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(EtudiantActivity.this, Potager_coursJardinageActivity.class);
+                startActivity(i);
+            }
+        });
         btnCarte.setOnClickListener(v -> Toast.makeText(this, "Carte composte", Toast.LENGTH_SHORT).show());
         btnRestaurant.setOnClickListener(v -> Toast.makeText(this, "Restaurant", Toast.LENGTH_SHORT).show());
 
