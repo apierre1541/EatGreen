@@ -3,69 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4CAF50"
-    android:padding="20dp">
+    android:background="@drawable/image_fond">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center_horizontal"
+        android:padding="16dp">
 
-        <!-- Logo / Titre -->
+        <!-- ESPACE EN HAUT (30% de l'espace) -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
+
+        <!-- LOGO -->
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_restaurant"
-            android:tint="#FFFFFF"
-            android:layout_marginBottom="20dp"/>
+            android:id="@+id/t1"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/logo_eatgreen" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="EatGreen"
-            android:textColor="#FFFFFF"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bienvenue sur l'application"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_marginBottom="40dp"/>
-
-        <!-- Bouton Connexion -->
-        <Button
-            android:id="@+id/btnLogin"
+        <!-- PETIT ESPACE ENTRE LOGO ET SLOGAN -->
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Se connecter"
-            android:textColor="#4CAF50"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:backgroundTint="#FFFFFF"
-            android:layout_marginBottom="20dp"
-            app:icon="@drawable/ic_lock"
-            app:iconGravity="textStart"
-            app:iconTint="#4CAF50"/>
+            android:layout_height="10dp" />
 
-        <!-- Bouton Inscription -->
-        <Button
-            android:id="@+id/btnRegister"
+        <!-- SLOGAN -->
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="S'inscrire"
-            android:textColor="#4CAF50"
+            android:layout_height="wrap_content"
+            android:fontFamily="aptos"
+            android:text="Réduis ton empreinte carbone, mais pas ton appétit !"
+            android:textAlignment="center"
+            android:textColor="#7fa513"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="24" />
+
+        <!-- BOUTON - EN BAS MAIS PAS TROP -->
+        <Button
+            android:id="@+id/commencer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FB1CE725"
+            android:gravity="center"
+            android:text="Commencer"
+            android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:backgroundTint="#FFFFFF"
-            app:icon="@drawable/ic_person"
-            app:iconGravity="textStart"
-            app:iconTint="#4CAF50"/>
+            app:iconTint="#4CAF50" />
+
+        <!-- PETIT ESPACE EN BAS (30% de l'espace) -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
 
     </LinearLayout>
+
 </RelativeLayout>
