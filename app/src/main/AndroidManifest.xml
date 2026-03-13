@@ -42,6 +42,9 @@
         <activity android:name=".ModifierUserActivity" />
         <activity android:name=".Potager_coursJardinageActivity" />
         <activity android:name=".BoutonActivity" />
+        <activity android:name=".FormCalendrierActivity" />
+        <activity android:name=".StatistiquesActivity" />
+        <activity android:name=".EvenementsActivity" />
     </application>
 
 </manifest>

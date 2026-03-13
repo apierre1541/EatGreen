@@ -51,6 +51,9 @@ dependencies {
     // Volley (connexion MySQL via API)
     implementation("com.android.volley:volley:1.2.1")
 
+    // Statistiques (MPAndroidChart)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     // Tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

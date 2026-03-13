@@ -11,12 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 
 import com.example.eatgreen.databinding.ActivityPotagerCoursJardinageBinding;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -30,13 +35,16 @@ public class CalendrierFragment extends Fragment {
     private int anneeActuelle;
     private int moisActuel;
 
+    // URL pour récupérer les événements depuis l'API
+    private static final String GET_EVENTS_URL = "http://10.0.2.2/eatgreen_api/get_evenement.php";
+
     // Variables pour la date à surligner
     private int jourSurligne = -1;
     private int moisSurligne = -1;
     private int anneeSurligne = -1;
 
     public CalendrierFragment() {
-        // Required empty public constructor
+        // Constructeur vide requis
     }
 
     @Override
@@ -127,28 +135,74 @@ public class CalendrierFragment extends Fragment {
         afficherMois(anneeActuelle, moisActuel);
 
         // 7. Gestionnaires de clic
-        btnMoisPrecedent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moisActuel--;
-                if (moisActuel < 1) {
-                    moisActuel = 12;
-                    anneeActuelle--;
-                }
-                afficherMois(anneeActuelle, moisActuel);
+        btnMoisPrecedent.setOnClickListener(v -> {
+            moisActuel--;
+            if (moisActuel < 1) {
+                moisActuel = 12;
+                anneeActuelle--;
             }
+            afficherMois(anneeActuelle, moisActuel);
         });
 
-        btnMoisSuivant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moisActuel++;
-                if (moisActuel > 12) {
-                    moisActuel = 1;
-                    anneeActuelle++;
-                }
-                afficherMois(anneeActuelle, moisActuel);
+        btnMoisSuivant.setOnClickListener(v -> {
+            moisActuel++;
+            if (moisActuel > 12) {
+                moisActuel = 1;
+                anneeActuelle++;
             }
+            afficherMois(anneeActuelle, moisActuel);
+        });
+
+        // 8. Bouton pour voir les événements créés
+        Button btnVoirEvenements = new Button(getContext());
+        btnVoirEvenements.setText("Voir événements");
+        btnVoirEvenements.setTextColor(Color.WHITE);
+        btnVoirEvenements.setBackgroundColor(Color.DKGRAY);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.topMargin = 16; // décoller un peu du calendrier
+        btnVoirEvenements.setLayoutParams(params);
+        layoutPrincipal.addView(btnVoirEvenements);
+
+        // 9. Appel quand on clique pour récupérer les événements et passer à l'activité d'affichage
+        btnVoirEvenements.setOnClickListener(v -> {
+            new Thread(() -> {
+                try {
+                    URL url = new URL(GET_EVENTS_URL);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        response.append(line);
+                    }
+                    br.close();
+                    conn.disconnect();
+
+                    String json = response.toString();
+
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            Intent intent = new Intent(getActivity(), EvenementsActivity.class);
+                            intent.putExtra("jsonEvenements", json);
+                            startActivity(intent);
+                        });
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Erreur GET", Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                }
+            }).start();
         });
 
         return layoutPrincipal;
@@ -173,20 +227,16 @@ public class CalendrierFragment extends Fragment {
      * Crée les boutons pour tous les jours du mois
      */
     private void creerBoutonsPourMois(int annee, int mois) {
-        // Déterminer le nombre de jours
         Calendar calendar = Calendar.getInstance();
         calendar.set(annee, mois - 1, 1);
         int nombreJours = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         int joursParSemaine = 7;
-
-        // Vider le conteneur
         container.removeAllViews();
 
         LinearLayout ligneActuelle = null;
 
         for (int i = 1; i <= nombreJours; i++) {
-            // Créer nouvelle ligne au début et tous les 7 jours
             if ((i - 1) % joursParSemaine == 0) {
                 ligneActuelle = new LinearLayout(getContext());
                 ligneActuelle.setLayoutParams(new LinearLayout.LayoutParams(
@@ -198,7 +248,6 @@ public class CalendrierFragment extends Fragment {
                 container.addView(ligneActuelle);
             }
 
-            // Créer le bouton
             Button btn = new Button(getContext());
             btn.setLayoutParams(new LinearLayout.LayoutParams(
                     0,
@@ -208,7 +257,7 @@ public class CalendrierFragment extends Fragment {
             btn.setText(String.valueOf(i));
             btn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-            // ✅ Couleur par défaut (bleu)
+            // Couleur par défaut (bleu)
             btn.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_blue_light));
             btn.setTextColor(Color.WHITE);
 
@@ -216,33 +265,23 @@ public class CalendrierFragment extends Fragment {
             final int moisFinal = mois;
             final int anneeFinal = annee;
 
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // ✅ 1. Réinitialiser TOUS les boutons en bleu
-                    reinitialiserCouleurs();
+            btn.setOnClickListener(v -> {
+                reinitialiserCouleurs(); // Réinitialiser tous les boutons en bleu
 
-                    // ✅ 2. Mettre le bouton cliqué en VERT
-                    v.setBackgroundColor(Color.GREEN);
-                    ((Button) v).setTextColor(Color.BLACK);
+                v.setBackgroundColor(Color.GREEN); // Mettre le bouton cliqué en vert
+                ((Button) v).setTextColor(Color.BLACK);
 
-                    // ✅ 3. Sauvegarder la date sélectionnée
-                    jourSurligne = jour;
-                    moisSurligne = moisFinal;
-                    anneeSurligne = anneeFinal;
+                jourSurligne = jour;
+                moisSurligne = moisFinal;
+                anneeSurligne = anneeFinal;
 
-                    // ✅ 4. OUVRIR UNE NOUVELLE ACTIVITÉ
-                    if (getActivity() != null) {
-                        Intent intent = new Intent(getActivity(), ActivityPotagerCoursJardinageBinding.class);
-
-                        // Optionnel : passer la date à l'activité suivante
-                        intent.putExtra("jour", jour);
-                        intent.putExtra("mois", moisFinal);
-                        intent.putExtra("annee", anneeFinal);
-                        intent.putExtra("date", jour + "/" + moisFinal + "/" + anneeFinal);
-
-                        startActivity(intent);
-                    }
+                if (getActivity() != null) {
+                    Intent intent = new Intent(getActivity(), FormCalendrierActivity.class);
+                    intent.putExtra("jour", jour);
+                    intent.putExtra("mois", moisFinal);
+                    intent.putExtra("annee", anneeFinal);
+                    intent.putExtra("date", jour + "/" + moisFinal + "/" + anneeFinal);
+                    startActivity(intent);
                 }
             });
 
@@ -264,5 +303,45 @@ public class CalendrierFragment extends Fragment {
                 }
             }
         }
+    }
+
+    /**
+     * Récupère les événements depuis l'API et affiche le JSON dans un toast (pour test)
+     */
+    private void recupererEvenements() {
+        new Thread(() -> {
+            try {
+                URL url = new URL(GET_EVENTS_URL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line);
+                }
+                br.close();
+                conn.disconnect();
+
+                String json = response.toString();
+
+                // Afficher le JSON reçu dans un toast pour test
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "JSON reçu : " + json, Toast.LENGTH_LONG).show()
+                    );
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Erreur GET", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            }
+        }).start();
     }
 }

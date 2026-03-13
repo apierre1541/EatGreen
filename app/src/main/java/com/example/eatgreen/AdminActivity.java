@@ -68,8 +68,14 @@ public class AdminActivity extends AppCompatActivity {
         btnDeconnexion.setOnClickListener(v -> logout());
 
         // Boutons Potager et Stats (Visuels uniquement, comme demandé)
-        btnPotager.setOnClickListener(v -> Toast.makeText(this, "Fonctionnalité à venir", Toast.LENGTH_SHORT).show());
-        btnStats.setOnClickListener(v -> Toast.makeText(this, "Fonctionnalité à venir", Toast.LENGTH_SHORT).show());
+        btnPotager.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, Potager_coursJardinageActivity.class);
+            startActivity(intent);
+        });
+        btnStats.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, StatistiquesActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void logout() {
