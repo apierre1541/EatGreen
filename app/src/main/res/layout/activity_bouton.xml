@@ -3,69 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4CAF50"
+    android:background="@drawable/image"
     android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <!-- Logo / Titre -->
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_restaurant"
-            android:tint="#FFFFFF"
-            android:layout_marginBottom="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="EatGreen"
-            android:textColor="#FFFFFF"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bienvenue sur l'application"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_marginBottom="40dp"/>
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/logo_eatgreen"/>
 
         <!-- Bouton Connexion -->
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#FFFFFF"
             android:text="Se connecter"
             android:textColor="#4CAF50"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:backgroundTint="#FFFFFF"
-            android:layout_marginBottom="20dp"
             app:icon="@drawable/ic_lock"
             app:iconGravity="textStart"
-            app:iconTint="#4CAF50"/>
+            app:iconTint="#4CAF50" />
 
         <!-- Bouton Inscription -->
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:backgroundTint="#FFFFFF"
             android:text="S'inscrire"
             android:textColor="#4CAF50"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:backgroundTint="#FFFFFF"
             app:icon="@drawable/ic_person"
             app:iconGravity="textStart"
-            app:iconTint="#4CAF50"/>
+            app:iconTint="#4CAF50" />
 
     </LinearLayout>
 </RelativeLayout>
