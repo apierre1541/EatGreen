@@ -4,78 +4,89 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4CAF50">
+    android:background="@color/material_dynamic_neutral99">
 
-    <!-- En-tête avec retour -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="#7fa513" />
+
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btnBack"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/image_suite"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:id="@+id/header">
+        android:padding="30dp">
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="#FFFFFF" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Connexion"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <!-- Logo / Titre -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EatGreen"
-        android:textColor="#FFFFFF"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:fontFamily="sans-serif-light"/>
-
-    <!-- Formulaire de connexion -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/header"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
-        android:padding="24dp"
-        android:elevation="10dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal">
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bienvenue !"
-            android:textColor="#333333"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="aptos"
+            android:text="Connexion"
+            android:textColor="#7fa513"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="110dp"
+        android:layout_marginTop="20dp"
+        android:background="#FFFFFF"
+        android:elevation="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text=" E-mail"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:fontFamily="aptos"
+            android:drawableStart="@drawable/ic_email"
+            android:drawableTint="#4CAF50" />
 
         <!-- Champ Email -->
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint=" Adresse email"
             android:layout_marginBottom="16dp"
+            android:hint=" Adresse email"
             app:boxStrokeColor="#4CAF50"
             app:hintTextColor="#4CAF50"
+            app:startIconContentDescription="Icône email"
             app:startIconDrawable="@drawable/ic_email"
             app:startIconTint="#4CAF50"
-            app:startIconContentDescription="Icône email">
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
@@ -86,20 +97,35 @@
                 android:paddingEnd="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Champ Mot de passe -->
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint=" Mot de passe"
             android:layout_marginBottom="8dp"
+            android:text=" Mot de passe"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:fontFamily="aptos"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawableTint="#4CAF50" />
+
+        <!-- Champ Mot de passe -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint=" Mot de passe"
             app:boxStrokeColor="#4CAF50"
             app:hintTextColor="#4CAF50"
-            app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="#4CAF50"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="#4CAF50"
-            app:startIconContentDescription="Icône cadenas">
+            app:startIconContentDescription="Icône cadenas"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="#4CAF50"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
@@ -107,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:paddingStart="45dp"
-                android:paddingEnd="12dp"/>
+                android:paddingEnd="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Mot de passe oublié -->
@@ -115,36 +141,36 @@
             android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="24dp"
             android:text="Mot de passe oublié ?"
             android:textColor="#4CAF50"
-            android:textSize="14sp"
-            android:layout_marginBottom="24dp"
-            android:layout_gravity="end"/>
+            android:textSize="14sp" />
 
         <!-- Bouton Connexion -->
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#4CAF50"
             android:text="SE CONNECTER"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#4CAF50"
-            android:layout_marginBottom="16dp"/>
+            android:textStyle="bold" />
 
         <!-- Lien vers inscription -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pas encore de compte ? "
-                android:textColor="#666666"/>
+                android:textColor="#666666" />
 
             <TextView
                 android:id="@+id/tvRegister"
@@ -152,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:text="S'inscrire"
                 android:textColor="#4CAF50"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
