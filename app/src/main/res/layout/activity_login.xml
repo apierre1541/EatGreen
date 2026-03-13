@@ -42,7 +42,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="24dp"
             android:fontFamily="aptos"
-            android:text="Connexion"
+            android:text="Bienvenue"
             android:textColor="#7fa513"
             android:textSize="30sp"
             android:textStyle="bold" />
