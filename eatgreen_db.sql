@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 05 mars 2026 à 20:01
+-- Généré le : ven. 13 mars 2026 à 14:59
 -- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.0.30
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `eatgreen_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `evenements`
+--
+
+CREATE TABLE `evenements` (
+  `id` int(11) NOT NULL,
+  `jour` int(11) NOT NULL,
+  `mois` int(11) NOT NULL,
+  `annee` int(11) NOT NULL,
+  `titre` varchar(100) NOT NULL,
+  `horaire` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `evenements`
+--
+
+INSERT INTO `evenements` (`id`, `jour`, `mois`, `annee`, `titre`, `horaire`) VALUES
+(1, 12, 3, 2026, ' Test', ' 14:00'),
+(2, 18, 3, 2026, 'Loutre', '12:30'),
+(3, 3, 3, 2026, 'Presentation', '09:30'),
+(4, 31, 3, 2026, 'Arrosage', '16:00');
 
 -- --------------------------------------------------------
 
@@ -91,11 +116,18 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `nom`, `prenom`, `telephone`, `email`, `role`, `mot_de_passe`, `date_inscription`, `date_validation`, `mode_paiement`, `demande_suppression`, `cb_numero`, `cb_date`, `cb_cvv`, `paypal_email`) VALUES
 (1, 'sarachh', 'benzri', '0764183531', 'sarah.benizri@etu.unilim.fr', 'etudiant', '$2y$10$DbSLxG28DMr9RflFwicC9uKzd9Rg97F1FiHPxSe1QIvNv.7mENKRO', '2026-03-05 09:07:02', '2026-03-05 12:46:19', 'Paypal', 0, NULL, NULL, NULL, 'sarahbenizri2004@gmail.com'),
 (2, 'david', 'benizri', '0764183531', 'davidbenizri@unilim.fr', 'admin', '$2y$10$xzlp6j1OujPvF7lyKzZiYO5U0h44j7iwv6/eBjxLjbKKCE3CISPEC', '2026-03-05 13:04:54', '2026-03-05 15:27:19', NULL, 0, NULL, NULL, NULL, NULL),
-(4, 'Rm', 'Benziri', '0611713588', 'rmbenizri@unilim.fr', 'restaurateur', '$2y$10$kGA0N2mQZ/ovp1XGeRQ9GeGZ9paYk9H6kjNJxJEz/rELfH7DuBNYO', '2026-03-05 15:36:08', '2026-03-05 16:39:25', NULL, 0, NULL, NULL, NULL, NULL);
+(4, 'Rm', 'Benziri', '0611713588', 'rmbenizri@unilim.fr', 'restaurateur', '$2y$10$kGA0N2mQZ/ovp1XGeRQ9GeGZ9paYk9H6kjNJxJEz/rELfH7DuBNYO', '2026-03-05 15:36:08', '2026-03-05 16:39:25', NULL, 0, NULL, NULL, NULL, NULL),
+(5, 'Jovanovic2', 'Luka2', '0750970794', 'luka.jovanovic@unilim.fr', 'admin', '$2y$10$dl/sDcvKLKsUOyRc.C4kyeJ/u8fyVgTXjDf3EN1/yKQsJ82YAIMm6', '2026-03-12 17:33:33', '2026-03-13 13:51:14', NULL, 0, NULL, NULL, NULL, NULL);
 
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `evenements`
+--
+ALTER TABLE `evenements`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `password_resets`
@@ -126,6 +158,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT pour la table `evenements`
+--
+ALTER TABLE `evenements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT pour la table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -141,7 +179,7 @@ ALTER TABLE `restaurants`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Contraintes pour les tables déchargées
