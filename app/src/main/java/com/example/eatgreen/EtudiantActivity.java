@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EtudiantActivity extends AppCompatActivity {
 
+    private String nomEtudiant;
+    private String prenomEtudiant;
+    private String telephoneEtudiant;
+    private String emailEtudiant;
     private TextView tvWelcome, tvEmail;
     private Button btnDeconnexion;
     // Nouveaux boutons de ta maquette
@@ -56,6 +60,11 @@ public class EtudiantActivity extends AppCompatActivity {
         // 2. Gestion du bouton Editer Profil (Maquette verte)
         btnEditerProfil.setOnClickListener(v -> {
             Intent intent = new Intent(EtudiantActivity.this, EditerProfilEtudiantActivity.class);
+            intent.putExtra("user_nom", nomEtudiant);
+            intent.putExtra("user_prenom", prenomEtudiant);
+            intent.putExtra("user_telephone", telephoneEtudiant);
+            intent.putExtra("user_email", emailEtudiant);
+
             startActivity(intent);
         });
 
@@ -71,18 +80,20 @@ public class EtudiantActivity extends AppCompatActivity {
 
     private void displayUserInfo() {
         Intent intent = getIntent();
-        String nom = intent.getStringExtra("user_nom");
-        String prenom = intent.getStringExtra("user_prenom");
-        String email = intent.getStringExtra("user_email");
+        nomEtudiant = intent.getStringExtra("user_nom");
+        prenomEtudiant = intent.getStringExtra("user_prenom");
+        telephoneEtudiant = intent.getStringExtra("user_telephone");
+        emailEtudiant = intent.getStringExtra("user_email");
 
-        if (nom != null && prenom != null) {
-            tvWelcome.setText("Bienvenue " + prenom + " " + nom);
+        // Afficher dans les TextView
+        if (nomEtudiant != null && prenomEtudiant != null) {
+            tvWelcome.setText("Bienvenue " + prenomEtudiant + " " + nomEtudiant);
         } else {
             tvWelcome.setText("Bienvenue Étudiant");
         }
 
-        if (email != null) {
-            tvEmail.setText(email);
+        if (emailEtudiant != null) {
+            tvEmail.setText(emailEtudiant);
             tvEmail.setVisibility(View.VISIBLE);
         }
     }

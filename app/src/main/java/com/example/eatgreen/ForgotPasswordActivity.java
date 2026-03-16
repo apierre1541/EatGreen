@@ -33,7 +33,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private TextView tvBackToLogin;
     private ImageView btnBack;
 
-    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
+    private static final String BASE_URL = "http://10.138.3.92/eatgreen_api/";
     private static final String FORGOT_PASSWORD_URL = BASE_URL + "forgot_password.php";
     private static final String TAG = "ForgotPasswordActivity";
 

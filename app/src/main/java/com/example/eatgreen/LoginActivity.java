@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvForgotPassword, tvRegister;
     private ImageView btnBack;
 
-    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
+    private static final String BASE_URL = "http://10.138.3.92/eatgreen_api/";
     private static final String LOGIN_URL = BASE_URL + "login.php";
     private static final String TAG = "LoginActivity";
 
@@ -177,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("user_id", user.getInt("id"));
                                         intent.putExtra("user_nom", user.getString("nom"));
                                         intent.putExtra("user_prenom", user.getString("prenom"));
+                                        intent.putExtra("user_telephone", user.getString("telephone"));
                                         intent.putExtra("user_email", user.getString("email"));
                                         break;
                                 }

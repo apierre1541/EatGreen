@@ -34,7 +34,7 @@ public class CreateRestaurantActivity extends AppCompatActivity {
     private int userId;
     private String userEmail, userNom, userPrenom;
 
-    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
+    private static final String BASE_URL = "http://10.138.3.92/eatgreen_api/";
     private static final String CREATE_RESTAURANT_URL = BASE_URL + "create_restaurant.php";
     private static final String TAG = "CreateRestaurantActivity";
 

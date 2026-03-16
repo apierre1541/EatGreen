@@ -16,7 +16,7 @@ public class ModifierUserActivity extends AppCompatActivity {
     private EditText etNom, etPrenom, etEmail;
     private Button btnEnregistrer;
     private int userId;
-    private String IP = "eatgreen.alwaysdata.net"; // TON IP
+    private String IP = "10.138.3.92"; // TON IP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

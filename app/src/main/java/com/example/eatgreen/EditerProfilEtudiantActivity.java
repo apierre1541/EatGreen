@@ -1,6 +1,7 @@
 package com.example.eatgreen;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class EditerProfilEtudiantActivity extends AppCompatActivity {
 
     private static final String TAG = "EditerProfilEtudiant";
-    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
+    private static final String BASE_URL = "http://10.138.3.92/eatgreen_api/";
     private static final String UPDATE_URL = BASE_URL + "update_profile.php";
     private static final String DELETE_REQ_URL = BASE_URL + "request_delete.php";
 
@@ -38,6 +39,22 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editer_profil_etudiant);
 
         initViews();
+        Intent intent = getIntent();
+        etNom.setText(intent.getStringExtra("user_nom"));
+        etPrenom.setText(intent.getStringExtra("user_prenom"));
+        etTelephone.setText(intent.getStringExtra("user_telephone"));
+        etMail.setText(intent.getStringExtra("user_email"));
+
+        etMail.setEnabled(false);
+        etMail.setFocusable(false);
+        etNom.setEnabled(false);
+        etNom.setFocusable(false);
+        etPrenom.setEnabled(false);
+        etPrenom.setFocusable(false);
+
+        etMail.setTextColor(Color.GRAY);
+        etNom.setTextColor(Color.GRAY);
+        etPrenom.setTextColor(Color.GRAY);
         setupListeners();
     }
 
