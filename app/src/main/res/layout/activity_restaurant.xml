@@ -1,194 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/material_dynamic_neutral99">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
-        <!-- En-tête -->
-        <LinearLayout
+        <!-- Titre "Tableau de bord" -->
+        <TextView
+            android:id="@+id/t1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:text="Tableau de bord"
+            android:textAlignment="center"
+            android:textColor="#7fa513"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Première image -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/t1"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/image_suite"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="30dp">
+            android:padding="30dp" />
+
+        <!-- Texte de bienvenue -->
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="aptos"
+            android:text=""
+            android:textColor="#7fa513"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <!-- Image avec bouton "Gérer les paniers" -->
+        <FrameLayout
+            android:id="@+id/frame_gerer_paniers"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/t2"
+            android:layout_marginBottom="16dp">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_restaurant"
-                android:tint="#4CAF50"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icone"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mon Restaurant"
-                android:textColor="#4CAF50"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:layout_marginStart="16dp"/>
-        </LinearLayout>
-
-        <!-- Carte d'informations -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:layout_marginBottom="20dp">
-
-            <LinearLayout
+            <Button
+                android:id="@+id/b1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:text="Gérer les paniers"
+                android:layout_gravity="bottom"
+                android:backgroundTint="#4CAF50"
+                android:alpha="0.9"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Section Historique -->
+        <LinearLayout
+            android:id="@+id/header3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame_gerer_paniers"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Ligne avec image et texte -->
+            <LinearLayout
+                android:id="@+id/header6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/historique_payment"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_marginEnd="12dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/t3"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Informations du gérant"
-                    android:textColor="#333333"
+                    android:layout_weight="1"
+                    android:fontFamily="aptos"
+                    android:text="Historique des paniers"
+                    android:textColor="#7fa513"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp"/>
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvNomGerant"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gérant: "
-                    android:textColor="#666666"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:id="@+id/tvEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email: "
-                    android:textColor="#666666"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:id="@+id/tvTelephone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Téléphone: "
-                    android:textColor="#666666"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E0E0E0"
-                    android:layout_marginVertical="10dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Informations du restaurant"
-                    android:textColor="#333333"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp"/>
-
-                <TextView
-                    android:id="@+id/tvNomRestaurant"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nom du restaurant"
-                    android:textColor="#4CAF50"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp"/>
-
-                <TextView
-                    android:id="@+id/tvSiret"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SIRET: "
-                    android:textColor="#666666"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp"/>
-
-                <TextView
-                    android:id="@+id/tvAdresse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Adresse: "
-                    android:textColor="#666666"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:id="@+id/tvCodePostal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Code postal: "
-                        android:textColor="#666666"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tvCommune"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="Commune: "
-                        android:textColor="#666666"
-                        android:textSize="16sp"/>
-                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/i1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="2dp"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/back_droite"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnEditerProfil"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="MODIFIER MON PROFIL"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#4CAF50"
-            android:layout_marginTop="10dp"
-            app:cornerRadius="8dp"/>
+            <!-- Date -->
+            <TextView
+                android:id="@+id/t4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="aptos"
+                android:text="Lundi 16 mars"
+                android:textColor="#666666"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp" />
 
-        <Button
-            android:id="@+id/btnPublierRepas"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="PUBLIER UN REPAS"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#2196F3"
-            android:layout_marginTop="10dp"
-            app:cornerRadius="8dp"/>
+            <!-- Section image + description -->
+            <LinearLayout
+                android:id="@+id/header4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingStart="0dp"
+                android:paddingEnd="16dp">
 
-        <!-- Bouton de déconnexion -->
-        <Button
-            android:id="@+id/btnDeconnexion"
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/icone_suite"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:text="Description de l'image"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="start"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Référence pour le bas -->
+        <View
+            android:id="@+id/bottom_reference"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="DÉCONNEXION"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#F44336"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_below="@+id/header3"
+            android:layout_alignParentBottom="true" />
+
+        <!-- Barre de navigation en bas -->
+        <LinearLayout
+            android:id="@+id/header5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-30dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="4"
+            android:elevation="4dp"
+            android:background="@android:color/white">
+
+            <ImageButton
+                android:id="@+id/b2"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/tableau_de_bord"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Tableau de bord" />
+
+            <ImageButton
+                android:id="@+id/b3"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/panier_1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Panier" />
+
+            <ImageButton
+                android:id="@+id/b4"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/statistique"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Statistiques" />
+
+            <ImageButton
+                android:id="@+id/b5"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/profil"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Profil" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </ScrollView>

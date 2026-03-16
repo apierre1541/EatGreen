@@ -1,23 +1,37 @@
 package com.example.eatgreen;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RestaurantActivity extends AppCompatActivity {
 
-    private TextView tvNomRestaurant, tvSiret, tvAdresse, tvCodePostal, tvCommune, tvNomGerant, tvEmail;
-    private Button btnDeconnexion, btnEditerProfil, btnPublierRepas;
+    private TextView t1, t2, t3, t4;
+    private ImageButton b2, b3, b4, b5, i1, btnDeconnexion, btnEditerProfil, btnPublierRepas;
+    private Button b1;
     private int idResto; // L'ID crucial de la table 'restaurateurs'
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
+
+        t1 = findViewById(R.id.t1);
+        t2 = findViewById(R.id.t2);
+        t3 = findViewById(R.id.t3);
+        b1 = findViewById(R.id.b1);
+        b2 = findViewById(R.id.b2);
+        b3 = findViewById(R.id.b3);
+        b4= findViewById(R.id.b4);
+        b5 = findViewById(R.id.b5);
+        i1 = findViewById(R.id.i1);
+        t4 = findViewById(R.id.t4);
 
         initViews();
         displayRestaurantInfo();
@@ -25,63 +39,47 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        tvNomRestaurant = findViewById(R.id.tvNomRestaurant);
-        tvSiret = findViewById(R.id.tvSiret);
-        tvAdresse = findViewById(R.id.tvAdresse);
-        tvCodePostal = findViewById(R.id.tvCodePostal);
-        tvCommune = findViewById(R.id.tvCommune);
-        tvNomGerant = findViewById(R.id.tvNomGerant);
-        tvEmail = findViewById(R.id.tvEmail);
 
-        btnDeconnexion = findViewById(R.id.btnDeconnexion);
-        btnEditerProfil = findViewById(R.id.btnEditerProfil);
-        btnPublierRepas = findViewById(R.id.btnPublierRepas);
+       // btnDeconnexion = findViewById(R.id.btnDeconnexion);
+       // btnEditerProfil = findViewById(R.id.btnEditerProfil);
+       // btnPublierRepas = findViewById(R.id.btnPublierRepas);
     }
 
     private void displayRestaurantInfo() {
         Intent intent = getIntent();
 
-        // On récupère l'ID envoyé par LoginActivity
+        // Récupérer l'ID et le nom
         idResto = intent.getIntExtra("restaurant_id", -1);
+        String nomResto = intent.getStringExtra("nom_restaurant");
+
         Log.d("DEBUG_EATGREEN", "ID Restaurateur reçu: " + idResto);
+        Log.d("DEBUG_EATGREEN", "Nom restaurant reçu: " + nomResto);
 
-        // Affichage des infos avec gestion des cas null
-        tvNomGerant.setText("👤 Gérant: " + intent.getStringExtra("user_prenom") + " " + intent.getStringExtra("user_nom"));
-        tvEmail.setText("✉️ Email: " + intent.getStringExtra("user_email"));
-
-        tvNomRestaurant.setText("🏠 " + intent.getStringExtra("nom_restaurant"));
-        tvSiret.setText("📋 SIRET: " + intent.getStringExtra("siret"));
-        tvAdresse.setText("📍 " + intent.getStringExtra("adresse"));
-        tvCodePostal.setText("📮 Code postal: " + intent.getStringExtra("code_postal"));
-        tvCommune.setText("🏘️ Commune: " + intent.getStringExtra("commune"));
+        if (nomResto != null) {
+            t2.setText("Bienvenue Restaurant " + nomResto);
+        } else {
+            t2.setText("Bienvenue Restaurant");
+        }
     }
 
     private void setupListeners() {
         // BOUTON MODIFIER
-        btnEditerProfil.setOnClickListener(v -> {
-            Intent intentEdit = new Intent(RestaurantActivity.this, ModifierRestoActivity.class);
+        //btnEditerProfil.setOnClickListener(v -> {
+            //Intent intentEdit = new Intent(RestaurantActivity.this, ModifierRestoActivity.class);
 
             // On fait passer l'ID pour le WHERE de la requête SQL
-            intentEdit.putExtra("ID_RESTO", idResto);
-
-            // On passe les valeurs actuelles SANS les emojis pour le pré-remplissage
-            intentEdit.putExtra("NOM_RESTO", tvNomRestaurant.getText().toString().replace("🏠 ", ""));
-            intentEdit.putExtra("SIRET", tvSiret.getText().toString().replace("📋 SIRET: ", ""));
-            intentEdit.putExtra("ADRESSE", tvAdresse.getText().toString().replace("📍 ", ""));
-            intentEdit.putExtra("CP", tvCodePostal.getText().toString().replace("📮 Code postal: ", ""));
-            intentEdit.putExtra("COMMUNE", tvCommune.getText().toString().replace("🏘️ Commune: ", ""));
-
-            startActivity(intentEdit);
-        });
+            //intentEdit.putExtra("ID_RESTO", idResto);
+            //startActivity(intentEdit);
+        //});
 
         // BOUTON DÉCONNEXION
-        btnDeconnexion.setOnClickListener(v -> {
-            Intent intent = new Intent(RestaurantActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
+        //btnDeconnexion.setOnClickListener(v -> {
+            //Intent intent = new Intent(RestaurantActivity.this, LoginActivity.class);
+          //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+           // startActivity(intent);
+           // finish();
+       // });
 
-        btnPublierRepas.setOnClickListener(v -> Toast.makeText(this, "Bientôt disponible", Toast.LENGTH_SHORT).show());
+        //btnPublierRepas.setOnClickListener(v -> Toast.makeText(this, "Bientôt disponible", Toast.LENGTH_SHORT).show());
     }
 }
