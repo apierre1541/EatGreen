@@ -57,7 +57,7 @@ public class ModifierRestoActivity extends AppCompatActivity {
     }
 
     private void envoyerModifications() {
-        String url = "http://10.0.2.2/eatgreen_api/update_restaurateur.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/update_restaurateur.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

@@ -28,7 +28,7 @@ public class GestionUtilisateursActivity extends AppCompatActivity {
     private Button btnAjouter;
 
     // Configuration pour l'émulateur (10.0.2.2 pointe vers le localhost de ton PC)
-    private static final String IP_ADDRESS = "10.0.2.2";
+    private static final String IP_ADDRESS = "eatgreen.alwaysdata.net";
     private static final String URL_GET = "http://" + IP_ADDRESS + "/eatgreen_api/get_users.php";
     private static final String URL_DELETE = "http://" + IP_ADDRESS + "/eatgreen_api/delete_user.php";
 

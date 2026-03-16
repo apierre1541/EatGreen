@@ -29,7 +29,7 @@ public class FormCalendrierActivity extends AppCompatActivity {
     private Button btnValider;
 
     // L’URL de ton API PHP (localhost si sur émulateur, sinon ton serveur distant)
-    private final String API_URL = "http://10.0.2.2/eatgreen_api/add_evenement.php";
+    private final String API_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/add_evenement.php";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

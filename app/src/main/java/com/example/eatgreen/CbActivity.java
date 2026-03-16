@@ -24,7 +24,7 @@ public class CbActivity extends AppCompatActivity {
     private EditText etNumCarte, etDateExp, etCvv;
     private Button btnEnregistrer;
 
-    private static final String SAVE_CB_URL = "http://10.0.2.2/eatgreen_api/save_cb.php";
+    private static final String SAVE_CB_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/save_cb.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

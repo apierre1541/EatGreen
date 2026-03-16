@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvLogin;
     private ImageView btnBack;
 
-    private static final String BASE_URL = "http://10.0.2.2/eatgreen_api/";
+    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
     private static final String REGISTER_URL = BASE_URL + "register.php";
     private static final String TAG = "RegisterActivity";
 
