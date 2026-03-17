@@ -47,6 +47,8 @@
         <activity android:name=".EvenementsActivity" />
         <activity android:name=".PublierPanierActivity" />
         <activity android:name=".DateHeureActivity" />
+        <activity android:name=".AffichagePanierActivity" />
+        <activity android:name=".PanierActivity" />
     </application>
 
 </manifest>

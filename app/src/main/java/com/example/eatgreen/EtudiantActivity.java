@@ -55,7 +55,13 @@ public class EtudiantActivity extends AppCompatActivity {
             }
         });
         btnCarte.setOnClickListener(v -> Toast.makeText(this, "Carte composte", Toast.LENGTH_SHORT).show());
-        btnRestaurant.setOnClickListener(v -> Toast.makeText(this, "Restaurant", Toast.LENGTH_SHORT).show());
+        btnRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(EtudiantActivity.this, AffichagePanierActivity.class);
+                startActivity(i);
+            }
+        });
 
         // 2. Gestion du bouton Editer Profil (Maquette verte)
         btnEditerProfil.setOnClickListener(v -> {

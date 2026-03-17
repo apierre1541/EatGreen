@@ -1,6 +1,7 @@
 package com.example.eatgreen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -181,6 +182,13 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("user_email", user.getString("email"));
                                         break;
                                 }
+
+                                SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                                prefs.edit().putInt("user_id", user.getInt("id")).apply();
+
+                                Intent i = new Intent(LoginActivity.this, AffichagePanierActivity.class);
+                                intent.putExtra("UTILISATEUR_ID", user.getInt("id"));  // ← Nécessaire pour cette activité
+                                startActivity(i);
 
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
