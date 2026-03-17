@@ -45,6 +45,8 @@
         <activity android:name=".FormCalendrierActivity" />
         <activity android:name=".StatistiquesActivity" />
         <activity android:name=".EvenementsActivity" />
+        <activity android:name=".PublierPanierActivity" />
+        <activity android:name=".DateHeureActivity" />
     </application>
 
 </manifest>

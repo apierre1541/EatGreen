@@ -33,16 +33,8 @@ public class RestaurantActivity extends AppCompatActivity {
         i1 = findViewById(R.id.i1);
         t4 = findViewById(R.id.t4);
 
-        initViews();
         displayRestaurantInfo();
         setupListeners();
-    }
-
-    private void initViews() {
-
-       // btnDeconnexion = findViewById(R.id.btnDeconnexion);
-       // btnEditerProfil = findViewById(R.id.btnEditerProfil);
-       // btnPublierRepas = findViewById(R.id.btnPublierRepas);
     }
 
     private void displayRestaurantInfo() {
@@ -63,14 +55,10 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // BOUTON MODIFIER
-        //btnEditerProfil.setOnClickListener(v -> {
-            //Intent intentEdit = new Intent(RestaurantActivity.this, ModifierRestoActivity.class);
-
-            // On fait passer l'ID pour le WHERE de la requête SQL
-            //intentEdit.putExtra("ID_RESTO", idResto);
-            //startActivity(intentEdit);
-        //});
+        b1.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantActivity.this, PublierPanierActivity.class);
+            startActivity(intent);
+        });
 
         // BOUTON DÉCONNEXION
         //btnDeconnexion.setOnClickListener(v -> {
