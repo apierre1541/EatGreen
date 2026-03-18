@@ -69,12 +69,11 @@ public class PanierActivity extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    Log.d("PANIER_DEBUG", "Réponse complète: " + response.toString());  // ← VOIR LA RÉPONSE
+                    Log.d("PANIER_DEBUG", "Réponse complète: " + response.toString());
 
                     try {
                         layoutPanier.removeAllViews();
 
-                        // Vérifier la structure
                         Log.d("PANIER_DEBUG", "success: " + response.getBoolean("success"));
                         Log.d("PANIER_DEBUG", "has articles: " + response.has("articles"));
 
@@ -92,6 +91,12 @@ public class PanierActivity extends AppCompatActivity {
 
                             for (int i = 0; i < articles.length(); i++) {
                                 JSONObject article = articles.getJSONObject(i);
+
+                                // ✅ RÉCUPÉRER RESTAURANT_ID DU PREMIER ARTICLE
+                                if (i == 0 && article.has("restaurant_id")) {
+                                    restaurantId = article.optInt("restaurant_id", 0);
+                                    Log.d("PANIER_DEBUG", "Restaurant ID reçu: " + restaurantId);
+                                }
 
                                 View itemView = getLayoutInflater().inflate(R.layout.item_panier, layoutPanier, false);
 
