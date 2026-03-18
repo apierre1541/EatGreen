@@ -130,6 +130,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
                 response -> {
                     try {
                         HashMap<Integer, Integer> panierQuantites = new HashMap<>();
+                        HashMap<Integer, Integer> quantitesRestantes = new HashMap<>(); // ← NOUVEAU
 
                         if (response.getBoolean("success") && response.has("articles")) {
                             JSONArray articles = response.getJSONArray("articles");
@@ -137,31 +138,32 @@ public class AffichagePanierActivity extends AppCompatActivity {
                                 JSONObject article = articles.getJSONObject(i);
                                 int platId = article.getInt("plat_id");
                                 int quantite = article.getInt("quantite");
+                                int quantiteRestante = article.getInt("quantite_restante"); // ← AJOUTER
+
                                 panierQuantites.put(platId, quantite);
+                                quantitesRestantes.put(platId, quantiteRestante);
                             }
                         }
+                        afficherPlats(panierQuantites, quantitesRestantes);
 
-                        // ✅ MAINTENANT on affiche les plats AVEC les quantités
-                        afficherPlats(panierQuantites);
-
-                        // Mettre à jour le badge
                         majBadgePanier(response);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        afficherPlats(new HashMap<>());
+                        afficherPlats(new HashMap<>(), new HashMap<>());
                     }
                 },
                 error -> {
                     Log.e("ERROR", "Erreur get panier: " + error.toString());
-                    afficherPlats(new HashMap<>());
+                    afficherPlats(new HashMap<>(), new HashMap<>());
                 }
         );
 
         requestQueue.add(request);
     }
 
-    private void afficherPlats(HashMap<Integer, Integer> panierQuantites) {
+    private void afficherPlats(HashMap<Integer, Integer> panierQuantites,
+                               HashMap<Integer, Integer> quantitesRestantes) {
         layout.removeAllViews();
 
         for (Plat plat : listePlats) {
@@ -176,8 +178,6 @@ public class AffichagePanierActivity extends AppCompatActivity {
                 TextView tvCodePostal = platView.findViewById(R.id.code_postal);
                 TextView tvCommune = platView.findViewById(R.id.commune);
                 Button btnAjouter = platView.findViewById(R.id.ajout_pannier);
-
-                // ✅ AJOUT : TextView pour la quantité disponible
                 TextView tvQuantiteRestante = platView.findViewById(R.id.quantite_restante);
 
                 // Remplir les vues
@@ -204,34 +204,44 @@ public class AffichagePanierActivity extends AppCompatActivity {
 
                 // GESTION DU BOUTON
                 if (btnAjouter != null) {
-                    // ✅ Récupérer la quantité depuis le panier
+                    // Récupérer les quantités
                     int quantiteDansPanier = panierQuantites.containsKey(plat.id) ? panierQuantites.get(plat.id) : 0;
+                    int quantiteRestante = quantitesRestantes.containsKey(plat.id) ?
+                            quantitesRestantes.get(plat.id) : plat.quantiteDisponible;
 
-                    // ✅ AJOUT : Calculer et afficher la quantité restante
-                    int quantiteDisponible = plat.quantiteDisponible; // Assurez-vous que cette variable existe dans Plat
-                    int quantiteRestante = quantiteDisponible - quantiteDansPanier;
-
+                    // Afficher la quantité restante
                     if (tvQuantiteRestante != null) {
-                        tvQuantiteRestante.setText("Disponible: " + quantiteRestante + "/" + quantiteDisponible);
+                        tvQuantiteRestante.setText("Disponible: " + quantiteRestante + "/" + plat.quantiteDisponible);
                     }
 
-                    // Mettre à jour l'état initial du bouton
-                    majBoutonPanier(btnAjouter, quantiteDansPanier);
+                    // Mettre à jour l'état du bouton
+                    if (quantiteRestante <= 0) {
+                        btnAjouter.setText("Rupture de stock");
+                        btnAjouter.setEnabled(false);
+                        btnAjouter.setAlpha(0.5f);
+                        btnAjouter.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9E9E9E")));
+                    } else if (quantiteDansPanier > 0) {
+                        btnAjouter.setText("✓ Dans le panier (x" + quantiteDansPanier + ")");
+                        btnAjouter.setEnabled(false);
+                        btnAjouter.setAlpha(0.5f);
+                        btnAjouter.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
+                    } else {
+                        btnAjouter.setText("Ajouter au panier");
+                        btnAjouter.setEnabled(true);
+                        btnAjouter.setAlpha(1.0f);
+                        btnAjouter.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E91E63")));
+                    }
 
                     final int platId = plat.id;
                     final String nomPlat = plat.nom;
                     final Button btn = btnAjouter;
+                    final int quantiteRestanteFinale = quantiteRestante;
 
                     btnAjouter.setOnClickListener(v -> {
-                        // Désactiver le bouton pendant l'opération
                         btn.setEnabled(false);
 
-                        if (quantiteDansPanier == 0) {
-                            // Ajouter au panier
+                        if (quantiteRestanteFinale > 0 && quantiteDansPanier == 0) {
                             ajouterAuPanier(platId, 1, btn, nomPlat);
-                        } else {
-                            // Retirer du panier
-                            retirerDuPanier(platId, btn, nomPlat);
                         }
                     });
                 }

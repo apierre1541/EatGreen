@@ -1,3 +1,4 @@
+
 package com.example.eatgreen;
 
 import android.annotation.SuppressLint;
@@ -30,7 +31,7 @@ public class PanierActivity extends AppCompatActivity {
 
     private LinearLayout layoutPanier;
     private TextView tvTotal;
-    private Button btnCommander, btnVider;  // ← Supprimez btn_retirer d'ici
+    private Button btnCommander, btnVider;
     private RequestQueue requestQueue;
     private int restaurantId = 0;
     private int utilisateurId;
@@ -64,22 +65,25 @@ public class PanierActivity extends AppCompatActivity {
 
     private void chargerPanier() {
         String url = "http://10.138.3.92/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
+        Log.d("PANIER_DEBUG", "URL: " + url);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
+                    Log.d("PANIER_DEBUG", "Réponse complète: " + response.toString());  // ← VOIR LA RÉPONSE
+
                     try {
                         layoutPanier.removeAllViews();
 
-                        // ✅ RÉCUPÉRER RESTAURANT_ID
-                        if (response.has("restaurant_id")) {
-                            restaurantId = response.getInt("restaurant_id");
-                            Log.d("PANIER", "Restaurant ID reçu: " + restaurantId);
-                        }
+                        // Vérifier la structure
+                        Log.d("PANIER_DEBUG", "success: " + response.getBoolean("success"));
+                        Log.d("PANIER_DEBUG", "has articles: " + response.has("articles"));
 
-                        if (response.getBoolean("success") && response.has("articles")) {
-                            JSONArray articles = response.getJSONArray("articles");
+                        if (response.getBoolean("success")) {
 
-                            if (articles.length() == 0) {
+                            JSONArray articles = response.optJSONArray("articles");
+
+                            if (articles == null || articles.length() == 0) {
+                                Log.d("PANIER_DEBUG", "Panier vide côté Android");
                                 afficherPanierVide();
                                 return;
                             }
@@ -88,6 +92,7 @@ public class PanierActivity extends AppCompatActivity {
 
                             for (int i = 0; i < articles.length(); i++) {
                                 JSONObject article = articles.getJSONObject(i);
+
                                 View itemView = getLayoutInflater().inflate(R.layout.item_panier, layoutPanier, false);
 
                                 TextView tvNom = itemView.findViewById(R.id.tv_nom_plat);
@@ -95,11 +100,10 @@ public class PanierActivity extends AppCompatActivity {
                                 TextView tvPrix = itemView.findViewById(R.id.tv_prix);
                                 Button btnRetirer = itemView.findViewById(R.id.btn_retirer);
 
-                                String nom = article.getString("nom_plat");
-                                int quantite = article.getInt("quantite");
-                                double prixUnitaire = article.getDouble("prix_unitaire");
-                                double totalLigne = article.getDouble("total_ligne");
-                                final int articleId = article.getInt("article_id");
+                                String nom = article.optString("nom_plat", "Inconnu");
+                                int quantite = article.optInt("quantite", 0);
+                                double totalLigne = article.optDouble("total_ligne", 0);
+                                final int articleId = article.optInt("article_id", 0);
 
                                 tvNom.setText(nom);
                                 tvQuantite.setText("x" + quantite);
@@ -118,12 +122,13 @@ public class PanierActivity extends AppCompatActivity {
                         }
 
                     } catch (JSONException e) {
+                        Log.e("PANIER_DEBUG", "Erreur JSON: " + e.getMessage());
                         e.printStackTrace();
                         afficherPanierVide();
                     }
                 },
                 error -> {
-                    Log.e("ERROR", "Erreur chargement panier: " + error.toString());
+                    Log.e("PANIER_DEBUG", "Erreur réseau: " + error.toString());
                     afficherPanierVide();
                     Toast.makeText(this, "Erreur de chargement", Toast.LENGTH_SHORT).show();
                 }
