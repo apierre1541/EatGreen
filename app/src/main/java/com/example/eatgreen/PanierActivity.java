@@ -14,18 +14,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class PanierActivity extends AppCompatActivity {
 
     private LinearLayout layoutPanier;
     private TextView tvTotal;
-    private Button btnCommander, btnVider;
+    private Button btnCommander, btnVider;  // ← Supprimez btn_retirer d'ici
     private RequestQueue requestQueue;
     private int utilisateurId;
 
@@ -39,6 +43,7 @@ public class PanierActivity extends AppCompatActivity {
         tvTotal = findViewById(R.id.tv_total);
         btnCommander = findViewById(R.id.btn_commander);
         btnVider = findViewById(R.id.btn_vider);
+        // btn_retirer = findViewById(R.id.btn_retirer);  ← À SUPPRIMER
         requestQueue = Volley.newRequestQueue(this);
 
         utilisateurId = getIntent().getIntExtra("users_id", 1);
@@ -47,6 +52,7 @@ public class PanierActivity extends AppCompatActivity {
 
         btnVider.setOnClickListener(v -> viderPanier());
         btnCommander.setOnClickListener(v -> validerPanier());
+        // btn_retirer.setOnClickListener(v -> retirerArticle(articleId));  ← À SUPPRIMER
     }
 
     private void chargerPanier() {
@@ -80,12 +86,15 @@ public class PanierActivity extends AppCompatActivity {
                                 int quantite = article.getInt("quantite");
                                 double prixUnitaire = article.getDouble("prix_unitaire");
                                 double totalLigne = article.getDouble("total_ligne");
-                                int articleId = article.getInt("article_id");
+
+                                // ✅ Récupérez articleId ici
+                                final int articleId = article.getInt("article_id");
 
                                 tvNom.setText(nom);
                                 tvQuantite.setText("x" + quantite);
                                 tvPrix.setText(String.format("%.2f€", totalLigne));
 
+                                // ✅ Utilisez articleId dans le listener
                                 btnRetirer.setOnClickListener(v -> retirerArticle(articleId));
 
                                 layoutPanier.addView(itemView);
@@ -127,9 +136,36 @@ public class PanierActivity extends AppCompatActivity {
     private void retirerArticle(int articleId) {
         String url = "http://10.138.3.92/eatgreen_api/retirer_panier.php";
 
-        // Utiliser une requête POST pour retirer l'article
-        // (à implémenter selon votre PHP)
-        chargerPanier(); // Recharger après retrait
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    try {
+                        JSONObject json = new JSONObject(response);
+                        if (json.getBoolean("success")) {
+                            Toast.makeText(this, "Article retiré du panier", Toast.LENGTH_SHORT).show();
+                            chargerPanier(); // Recharger l'affichage
+                        } else {
+                            Toast.makeText(this, "Erreur: " + json.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Toast.makeText(this, "Erreur réseau", Toast.LENGTH_SHORT).show();
+                    Log.e("RETIRER", "Erreur: " + error.toString());
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("users_id", String.valueOf(utilisateurId));
+                params.put("article_id", String.valueOf(articleId));
+                Log.d("RETIRER", "Params: " + params);
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
     }
 
     private void viderPanier() {
