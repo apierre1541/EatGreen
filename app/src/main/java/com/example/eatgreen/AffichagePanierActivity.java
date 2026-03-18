@@ -248,14 +248,27 @@ public class AffichagePanierActivity extends AppCompatActivity {
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
+                    Log.d("AJOUT", "Réponse: " + response);
                     try {
                         JSONObject json = new JSONObject(response);
                         if (json.getBoolean("success")) {
-                            Toast.makeText(this, "✅ " + nomPlat + " ajouté au panier", Toast.LENGTH_SHORT).show();
-                            majBoutonPanier(btn, 1);
+                            // Récupérer la quantité restante
+                            int quantiteRestante = json.getInt("quantite_restante");
+
+                            Toast.makeText(this, nomPlat + " ajouté", Toast.LENGTH_SHORT).show();
+
+                            if (quantiteRestante <= 0) {
+                                btn.setText("Rupture de stock");
+                                btn.setEnabled(false);
+                                btn.setAlpha(0.5f);
+                                btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9E9E9E")));
+                            } else {
+                                majBoutonPanier(btn, 1);
+                            }
+
                             getPanierDepuisServeur();
                         } else {
-                            Toast.makeText(this, "❌ " + json.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                             btn.setEnabled(true);
                         }
                     } catch (JSONException e) {
@@ -264,16 +277,18 @@ public class AffichagePanierActivity extends AppCompatActivity {
                     }
                 },
                 error -> {
-                    Toast.makeText(this, "Erreur réseau: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("AJOUT", "Erreur réseau", error);
+                    Toast.makeText(this, "Erreur réseau", Toast.LENGTH_SHORT).show();
                     btn.setEnabled(true);
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("users_id", String.valueOf(utilisateurId));  // ← Changé
+                params.put("users_id", String.valueOf(utilisateurId));
                 params.put("plat_id", String.valueOf(platId));
                 params.put("quantite", String.valueOf(quantite));
+                Log.d("AJOUT", "Params: " + params);
                 return params;
             }
         };
