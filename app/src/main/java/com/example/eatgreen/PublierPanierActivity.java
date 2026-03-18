@@ -97,6 +97,12 @@ public class PublierPanierActivity extends AppCompatActivity {
             return;
         }
 
+        // ✅ Vérifier que l'ID du restaurant est valide
+        if (idResto == 0) {
+            Toast.makeText(this, "Erreur: ID restaurant non trouvé", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         b7.setEnabled(false);
         b7.setText("Envoi en cours...");
 
@@ -114,7 +120,8 @@ public class PublierPanierActivity extends AppCompatActivity {
                             .addFormDataPart("prix", prix.getText().toString())
                             .addFormDataPart("adresse_postal", adresse_postal.getText().toString())
                             .addFormDataPart("code_postal", code_postal.getText().toString())
-                            .addFormDataPart("commune", commune.getText().toString());
+                            .addFormDataPart("commune", commune.getText().toString())
+                            .addFormDataPart("restaurant_id", String.valueOf(idResto));  // ← AJOUTÉ
 
                     if (!imagePath.isEmpty()) {
                         Uri uri = Uri.parse(imagePath);
@@ -157,7 +164,8 @@ public class PublierPanierActivity extends AppCompatActivity {
                                     }, 1500);
 
                                 } else {
-                                    Toast.makeText(PublierPanierActivity.this,jsonResponse.getString("message"),
+                                    Toast.makeText(PublierPanierActivity.this,
+                                            jsonResponse.getString("message"),
                                             Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {

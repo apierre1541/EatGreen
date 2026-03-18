@@ -28,6 +28,15 @@
                 android:layout_marginRight="16dp">
 
                 <TextView
+                    android:id="@+id/tv_nom_restaurant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
                     android:id="@+id/nom_plats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

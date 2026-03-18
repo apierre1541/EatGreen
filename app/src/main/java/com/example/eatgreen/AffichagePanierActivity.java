@@ -44,12 +44,14 @@ public class AffichagePanierActivity extends AppCompatActivity {
     private int utilisateurId;
 
     // Classe interne Plat
+    // Classe interne Plat
     class Plat {
-        String nom, photo, condition, adresse, codePostal, commune;
+        String nom, photo, condition, adresse, codePostal, commune, nomRestaurant;  // ← AJOUTER
         int prix, id, quantiteDisponible, restaurantId;
 
         Plat(String nom, String photo, String condition, int prix,
-             String adresse, String codePostal, String commune, int id, int quantiteDisponible, int restaurantId) {
+             String adresse, String codePostal, String commune,
+             int id, int quantiteDisponible, int restaurantId, String nomRestaurant) {  // ← NOUVEAU PARAMÈTRE
             this.nom = nom;
             this.photo = photo;
             this.condition = condition;
@@ -60,6 +62,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
             this.id = id;
             this.quantiteDisponible = quantiteDisponible;
             this.restaurantId = restaurantId;
+            this.nomRestaurant = nomRestaurant;
         }
     }
 
@@ -100,6 +103,10 @@ public class AffichagePanierActivity extends AppCompatActivity {
                         listePlats.clear();
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject obj = response.getJSONObject(i);
+
+                            // Récupérer le nom du restaurant (avec valeur par défaut)
+                            String nomRestaurant = obj.optString("nom_restaurant", "Restaurant inconnu");
+
                             listePlats.add(new Plat(
                                     obj.getString("nom_plat"),
                                     obj.getString("photo"),
@@ -110,7 +117,8 @@ public class AffichagePanierActivity extends AppCompatActivity {
                                     obj.getString("commune"),
                                     obj.getInt("id"),
                                     obj.getInt("quantite"),
-                                    obj.getInt("restaurant_id")
+                                    obj.getInt("restaurant_id"),
+                                    nomRestaurant  // ← AJOUTER
                             ));
                         }
                         getPanierDepuisServeur();
@@ -122,7 +130,6 @@ public class AffichagePanierActivity extends AppCompatActivity {
         );
         requestQueue.add(request);
     }
-
     private void getPanierDepuisServeur() {
         String url = "http://10.138.3.92/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
 
@@ -180,6 +187,9 @@ public class AffichagePanierActivity extends AppCompatActivity {
                 Button btnAjouter = platView.findViewById(R.id.ajout_pannier);
                 TextView tvQuantiteRestante = platView.findViewById(R.id.quantite_restante);
 
+                // ✅ NOUVEAU TextView pour le nom du restaurant
+                @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvRestaurant = platView.findViewById(R.id.tv_nom_restaurant);
+
                 // Remplir les vues
                 tvNom.setText(plat.nom);
                 tvCondition.setText("Condition: " + plat.condition);
@@ -187,6 +197,11 @@ public class AffichagePanierActivity extends AppCompatActivity {
                 tvAdresse.setText("Adresse: " + plat.adresse);
                 tvCodePostal.setText("Code postal: " + plat.codePostal);
                 tvCommune.setText("Commune: " + plat.commune);
+
+                // ✅ Afficher le nom du restaurant
+                if (tvRestaurant != null) {
+                    tvRestaurant.setText("Restaurant: " + plat.nomRestaurant);
+                }
 
                 // Gérer la photo
                 if (tvPhoto != null) {
@@ -202,19 +217,16 @@ public class AffichagePanierActivity extends AppCompatActivity {
                     }
                 }
 
-                // GESTION DU BOUTON
+                // GESTION DU BOUTON (le reste inchangé)
                 if (btnAjouter != null) {
-                    // Récupérer les quantités
                     int quantiteDansPanier = panierQuantites.containsKey(plat.id) ? panierQuantites.get(plat.id) : 0;
                     int quantiteRestante = quantitesRestantes.containsKey(plat.id) ?
                             quantitesRestantes.get(plat.id) : plat.quantiteDisponible;
 
-                    // Afficher la quantité restante
                     if (tvQuantiteRestante != null) {
                         tvQuantiteRestante.setText("Disponible: " + quantiteRestante + "/" + plat.quantiteDisponible);
                     }
 
-                    // Mettre à jour l'état du bouton
                     if (quantiteRestante <= 0) {
                         btnAjouter.setText("Rupture de stock");
                         btnAjouter.setEnabled(false);
@@ -239,7 +251,6 @@ public class AffichagePanierActivity extends AppCompatActivity {
 
                     btnAjouter.setOnClickListener(v -> {
                         btn.setEnabled(false);
-
                         if (quantiteRestanteFinale > 0 && quantiteDansPanier == 0) {
                             ajouterAuPanier(platId, 1, btn, nomPlat);
                         }
