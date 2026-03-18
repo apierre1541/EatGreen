@@ -41,7 +41,7 @@ public class PanierActivity extends AppCompatActivity {
         btnVider = findViewById(R.id.btn_vider);
         requestQueue = Volley.newRequestQueue(this);
 
-        utilisateurId = getIntent().getIntExtra("utilisateur_id", 1);
+        utilisateurId = getIntent().getIntExtra("users_id", 1);
 
         chargerPanier();
 
@@ -50,7 +50,7 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void chargerPanier() {
-        String url = "http://10.138.3.92/eatgreen_api/get_panier.php?utilisateur_id=" + utilisateurId;
+        String url = "http://10.138.3.92/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {

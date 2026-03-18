@@ -382,7 +382,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
 
     private void ouvrirPanier() {
         Intent intent = new Intent(AffichagePanierActivity.this, PanierActivity.class);
-        intent.putExtra("utilisateur_id", utilisateurId);
+        intent.putExtra("users_id", utilisateurId);
         startActivity(intent);
     }
 }
