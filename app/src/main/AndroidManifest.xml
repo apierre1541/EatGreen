@@ -50,6 +50,7 @@
         <activity android:name=".AffichagePanierActivity" />
         <activity android:name=".PanierActivity" />
         <activity android:name=".CommanderActivity" />
+        <activity android:name=".PaymentActivity" />
     </application>
 
 </manifest>

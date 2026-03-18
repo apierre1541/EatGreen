@@ -1,6 +1,7 @@
 package com.example.eatgreen;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ public class PanierActivity extends AppCompatActivity {
     private TextView tvTotal;
     private Button btnCommander, btnVider;  // ← Supprimez btn_retirer d'ici
     private RequestQueue requestQueue;
+    private int restaurantId = 0;
     private int utilisateurId;
 
     @SuppressLint("MissingInflatedId")
@@ -43,7 +45,6 @@ public class PanierActivity extends AppCompatActivity {
         tvTotal = findViewById(R.id.tv_total);
         btnCommander = findViewById(R.id.btn_commander);
         btnVider = findViewById(R.id.btn_vider);
-        // btn_retirer = findViewById(R.id.btn_retirer);  ← À SUPPRIMER
         requestQueue = Volley.newRequestQueue(this);
 
         utilisateurId = getIntent().getIntExtra("users_id", 1);
@@ -51,8 +52,14 @@ public class PanierActivity extends AppCompatActivity {
         chargerPanier();
 
         btnVider.setOnClickListener(v -> viderPanier());
-        btnCommander.setOnClickListener(v -> validerPanier());
-        // btn_retirer.setOnClickListener(v -> retirerArticle(articleId));  ← À SUPPRIMER
+        btnCommander.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PanierActivity.this, CommanderActivity.class);
+                intent.putExtra("restaurant_id", restaurantId);
+                startActivity(intent);
+            }
+        });
     }
 
     private void chargerPanier() {
@@ -62,6 +69,12 @@ public class PanierActivity extends AppCompatActivity {
                 response -> {
                     try {
                         layoutPanier.removeAllViews();
+
+                        // ✅ RÉCUPÉRER RESTAURANT_ID
+                        if (response.has("restaurant_id")) {
+                            restaurantId = response.getInt("restaurant_id");
+                            Log.d("PANIER", "Restaurant ID reçu: " + restaurantId);
+                        }
 
                         if (response.getBoolean("success") && response.has("articles")) {
                             JSONArray articles = response.getJSONArray("articles");
@@ -86,15 +99,12 @@ public class PanierActivity extends AppCompatActivity {
                                 int quantite = article.getInt("quantite");
                                 double prixUnitaire = article.getDouble("prix_unitaire");
                                 double totalLigne = article.getDouble("total_ligne");
-
-                                // ✅ Récupérez articleId ici
                                 final int articleId = article.getInt("article_id");
 
                                 tvNom.setText(nom);
                                 tvQuantite.setText("x" + quantite);
                                 tvPrix.setText(String.format("%.2f€", totalLigne));
 
-                                // ✅ Utilisez articleId dans le listener
                                 btnRetirer.setOnClickListener(v -> retirerArticle(articleId));
 
                                 layoutPanier.addView(itemView);

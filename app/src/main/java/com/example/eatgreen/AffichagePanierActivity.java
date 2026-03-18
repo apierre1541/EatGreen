@@ -46,10 +46,10 @@ public class AffichagePanierActivity extends AppCompatActivity {
     // Classe interne Plat
     class Plat {
         String nom, photo, condition, adresse, codePostal, commune;
-        int prix, id, quantiteDisponible;  // ← Ajoutez ce champ
+        int prix, id, quantiteDisponible, restaurantId;
 
         Plat(String nom, String photo, String condition, int prix,
-             String adresse, String codePostal, String commune, int id, int quantiteDisponible) {
+             String adresse, String codePostal, String commune, int id, int quantiteDisponible, int restaurantId) {
             this.nom = nom;
             this.photo = photo;
             this.condition = condition;
@@ -59,6 +59,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
             this.commune = commune;
             this.id = id;
             this.quantiteDisponible = quantiteDisponible;
+            this.restaurantId = restaurantId;
         }
     }
 
@@ -108,7 +109,8 @@ public class AffichagePanierActivity extends AppCompatActivity {
                                     obj.getString("code_postal"),
                                     obj.getString("commune"),
                                     obj.getInt("id"),
-                                    obj.getInt("quantite")  // ← Récupérer la quantité
+                                    obj.getInt("quantite"),
+                                    obj.getInt("restaurant_id")
                             ));
                         }
                         getPanierDepuisServeur();
@@ -254,16 +256,20 @@ public class AffichagePanierActivity extends AppCompatActivity {
                         if (json.getBoolean("success")) {
                             // Récupérer la quantité restante
                             int quantiteRestante = json.getInt("quantite_restante");
+                            int totalDansPanier = json.getInt("total_articles"); // Total dans le panier pour ce plat
 
-                            Toast.makeText(this, nomPlat + " ajouté", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, nomPlat + " ajouté (" + totalDansPanier + "/" +
+                                    (totalDansPanier + quantiteRestante) + ")", Toast.LENGTH_SHORT).show();
 
+                            // Mettre à jour le bouton
+                            majBoutonPanier(btn, totalDansPanier);
+
+                            // Si plus de stock disponible, désactiver définitivement
                             if (quantiteRestante <= 0) {
                                 btn.setText("Rupture de stock");
                                 btn.setEnabled(false);
                                 btn.setAlpha(0.5f);
                                 btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9E9E9E")));
-                            } else {
-                                majBoutonPanier(btn, 1);
                             }
 
                             getPanierDepuisServeur();
@@ -336,7 +342,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
     private void majBoutonPanier(Button btn, int quantite) {
         if (quantite > 0) {
             btn.setText("✓ Dans le panier (x" + quantite + ")");
-            btn.setEnabled(false);
+            btn.setEnabled(false);  // Désactivé car déjà dans le panier
             btn.setAlpha(0.5f);
             btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4CAF50")));
         } else {
@@ -346,7 +352,6 @@ public class AffichagePanierActivity extends AppCompatActivity {
             btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E91E63")));
         }
     }
-
     private void majBadgePanier(JSONObject panierData) {
         try {
             if (panierData.getBoolean("success")) {
