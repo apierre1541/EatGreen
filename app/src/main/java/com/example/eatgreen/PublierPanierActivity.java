@@ -31,7 +31,7 @@ public class PublierPanierActivity extends AppCompatActivity {
     EditText titre, condition, quantite, prix, adresse_postal, code_postal, commune;
     Button photo, b7;
     private String imagePath = "";
-
+    private int idResto;
     private static final int REQUEST_IMAGE_PICK = 2;
 
     @SuppressLint("MissingInflatedId")
@@ -49,6 +49,8 @@ public class PublierPanierActivity extends AppCompatActivity {
         adresse_postal = findViewById(R.id.adresse_postal);
         code_postal = findViewById(R.id.code_postal);
         commune = findViewById(R.id.commune);
+
+        idResto = getIntent().getIntExtra("restaurant_id", 0);
 
         b7.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +151,7 @@ public class PublierPanierActivity extends AppCompatActivity {
                                         @Override
                                         public void run() {
                                             Intent intent = new Intent(PublierPanierActivity.this, DateHeureActivity.class);
+                                            intent.putExtra("restaurant_id", idResto);
                                             startActivity(intent);
                                         }
                                     }, 1500);

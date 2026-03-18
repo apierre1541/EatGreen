@@ -27,6 +27,7 @@ public class DateHeureActivity extends AppCompatActivity {
     EditText date, heure;
     Button b9;
     RequestQueue requestQueue;
+    int restaurantId;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -37,6 +38,9 @@ public class DateHeureActivity extends AppCompatActivity {
         date = findViewById(R.id.date);
         heure = findViewById(R.id.heure);
         b9 = findViewById(R.id.b9);
+
+        // ✅ Récupérer l'ID du restaurant passé par l'intent
+        restaurantId = getIntent().getIntExtra("restaurant_id", 0);
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -57,50 +61,48 @@ public class DateHeureActivity extends AppCompatActivity {
             return;
         }
 
+        if (restaurantId == 0) {
+            Toast.makeText(this, "Erreur: ID restaurant non trouvé", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String url = "http://10.138.3.92/eatgreen_api/date_heure.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            if (jsonResponse.getBoolean("success")) {
-                                Toast.makeText(DateHeureActivity.this,
-                                        jsonResponse.getString("message"),
-                                        Toast.LENGTH_LONG).show();
-
-                                date.setText("");
-                                heure.setText("");
-
-                                // Optionnel: focus sur le premier champ
-                                date.requestFocus();
-
-                            } else {
-                                Toast.makeText(DateHeureActivity.this,
-                                        jsonResponse.getString("message"),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                response -> {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        if (jsonResponse.getBoolean("success")) {
                             Toast.makeText(DateHeureActivity.this,
-                                    "Erreur de parsing", Toast.LENGTH_SHORT).show();
+                                    jsonResponse.getString("message"),
+                                    Toast.LENGTH_LONG).show();
+
+                            date.setText("");
+                            heure.setText("");
+
+
+                            date.requestFocus();
+
+                        } else {
+                            Toast.makeText(DateHeureActivity.this,
+                                    jsonResponse.getString("message"),
+                                    Toast.LENGTH_LONG).show();
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DateHeureActivity.this,
-                                "Erreur réseau: " + error.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
+                error -> {
+                    Toast.makeText(DateHeureActivity.this,
+                            "Erreur réseau: " + error.getMessage(),
+                            Toast.LENGTH_LONG).show();
                 }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("date", date.getText().toString().trim());
-                params.put("heure", heure.getText().toString().trim());
+                params.put("date", dateTexte);
+                params.put("heure", heureTexte);
+                params.put("restaurant_id", String.valueOf(restaurantId));
                 return params;
             }
         };

@@ -57,6 +57,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private void setupListeners() {
         b1.setOnClickListener(v -> {
             Intent intent = new Intent(RestaurantActivity.this, PublierPanierActivity.class);
+            intent.putExtra("restaurant_id", idResto);
             startActivity(intent);
         });
 
