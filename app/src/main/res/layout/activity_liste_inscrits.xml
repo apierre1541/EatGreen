@@ -10,7 +10,7 @@
         android:id="@+id/tv_titre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Inscrits du ..."
+        android:text="Tous les cours et inscriptions"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#4CAF50"
@@ -18,8 +18,11 @@
         android:layout_marginBottom="16dp"/>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:id="@+id/container_inscrits"
@@ -28,5 +31,16 @@
             android:orientation="vertical" />
 
     </ScrollView>
+
+    <!-- Bouton pour imprimer en PDF -->
+    <Button
+        android:id="@+id/btn_imprimer_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Imprimer en PDF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="#F44336"
+        android:textColor="#FFFFFF"/>
 
 </LinearLayout>
