@@ -277,7 +277,13 @@ public class AffichagePanierActivity extends AppCompatActivity {
                         if (json.getBoolean("success")) {
                             // Récupérer la quantité restante
                             int quantiteRestante = json.getInt("quantite_restante");
-                            int totalDansPanier = json.getInt("total_articles"); // Total dans le panier pour ce plat
+                            int totalDansPanier = json.getInt("total_articles");
+
+                            // ✅ RÉCUPÉRER LES INFOS DU RESTAURANT
+                            int restoId = json.getInt("restaurant_id");
+                            String restoNom = json.getString("nom_restaurant");
+
+                            Log.d("AJOUT", "Restaurant: " + restoNom + " (ID: " + restoId + ")");
 
                             Toast.makeText(this, nomPlat + " ajouté (" + totalDansPanier + "/" +
                                     (totalDansPanier + quantiteRestante) + ")", Toast.LENGTH_SHORT).show();
