@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvForgotPassword, tvRegister;
     private ImageView btnBack;
 
-    private static final String BASE_URL = "http://10.138.3.92/eatgreen_api/";
+    private static final String BASE_URL = "http://192.168.1.40/eatgreen_api/";
     private static final String LOGIN_URL = BASE_URL + "login.php";
     private static final String TAG = "LoginActivity";
 

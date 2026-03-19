@@ -36,7 +36,7 @@ public class CalendrierFragment extends Fragment {
     private int moisActuel;
 
     // URL pour récupérer les événements depuis l'API
-    private static final String GET_EVENTS_URL = "http://10.138.3.92/eatgreen_api/get_evenement.php";
+    private static final String GET_EVENTS_URL = "http://192.168.1.40/eatgreen_api/get_evenement.php";
 
     // Variables pour la date à surligner
     private int jourSurligne = -1;

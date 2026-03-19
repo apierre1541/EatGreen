@@ -71,7 +71,7 @@ public class CommanderActivity extends AppCompatActivity {
     }
 
     private void chargerHoraires(String nomRestaurant, double totalPayer) {
-        String url = "http://10.138.3.92/eatgreen_api/get_date_heure.php?restaurant_id=" + restaurantId;
+        String url = "http://192.168.1.40/eatgreen_api/get_date_heure.php?restaurant_id=" + restaurantId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {

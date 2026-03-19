@@ -21,7 +21,7 @@ public class PaypalActivity extends AppCompatActivity {
 
     private EditText etEmailPaypal;
     private Button btnEnregistrer;
-    private static final String SAVE_PAYPAL_URL = "http://10.138.3.92/eatgreen_api/save_paypal.php";
+    private static final String SAVE_PAYPAL_URL = "http://192.168.1.40/eatgreen_api/save_paypal.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

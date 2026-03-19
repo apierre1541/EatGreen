@@ -83,7 +83,7 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void chargerPanier() {
-        String url = "http://10.138.3.92/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
+        String url = "http://192.168.1.40/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
         Log.d("PANIER_DEBUG", "=== DÉBUT CHARGEMENT PANIER ===");
         Log.d("PANIER_DEBUG", "URL: " + url);
         Log.d("PANIER_DEBUG", "Utilisateur ID: " + utilisateurId);
@@ -141,6 +141,9 @@ public class PanierActivity extends AppCompatActivity {
                                 Log.d("PANIER_DEBUG", "✅ restaurant_id trouvé: " + restaurantId);
                             } else {
                                 Log.e("PANIER_DEBUG", "❌ restaurant_id NON TROUVÉ dans le JSON !");
+                                // Valeur par défaut
+                                restaurantId = 1;  // ← À MODIFIER SELON VOTRE BASE
+                                Log.d("PANIER_DEBUG", "Utilisation de la valeur par défaut: " + restaurantId);
                             }
 
                             if (firstArticle.has("nom_restaurant")) {
@@ -245,7 +248,7 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void retirerArticle(int articleId) {
-        String url = "http://10.138.3.92/eatgreen_api/retirer_panier.php";
+        String url = "http://192.168.1.40/eatgreen_api/retirer_panier.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

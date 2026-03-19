@@ -95,7 +95,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void enregistrerCommande(String modePaiement) {
-        String url = "http://10.138.3.92/eatgreen_api/enregistrer_commande.php";
+        String url = "http://192.168.1.40/eatgreen_api/enregistrer_commande.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

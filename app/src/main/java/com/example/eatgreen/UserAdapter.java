@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,7 +71,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            // On récupère les ID de item_user.xml
             txtName = itemView.findViewById(R.id.txtName);
             txtRole = itemView.findViewById(R.id.txtRole);
             btnEdit = itemView.findViewById(R.id.btnEditUser);

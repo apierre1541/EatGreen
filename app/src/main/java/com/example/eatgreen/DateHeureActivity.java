@@ -66,7 +66,7 @@ public class DateHeureActivity extends AppCompatActivity {
             return;
         }
 
-        String url = "http://10.138.3.92/eatgreen_api/date_heure.php";
+        String url = "http://192.168.1.40/eatgreen_api/date_heure.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> {
