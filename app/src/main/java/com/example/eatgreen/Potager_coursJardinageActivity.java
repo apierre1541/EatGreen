@@ -1,100 +1,247 @@
 package com.example.eatgreen;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class Potager_coursJardinageActivity extends AppCompatActivity {
 
-    private EditText etDate;
+    private LinearLayout containerHoraires;
+    private ScrollView scrollViewHoraires;
     private CalendrierFragment calendrierFragment;
+    private List<Evenement> evenementsDuJour = new ArrayList<>();
+    private int jourActuel, moisActuel, anneeActuel;
 
-    @SuppressLint("MissingInflatedId")
+    // Classe pour les événements
+    class Evenement {
+        int id;
+        String titre;
+        String horaire;
+
+        Evenement(int id, String titre, String horaire) {
+            this.id = id;
+            this.titre = titre;
+            this.horaire = horaire;
+        }
+    }
+
+    @SuppressLint({"MissingInfliedId", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_potager_cours_jardinage);
 
-        etDate = findViewById(R.id.et_date);
+        containerHoraires = findViewById(R.id.container_horaires);
+        scrollViewHoraires = findViewById(R.id.scrollView_horaires);
 
-        calendrierFragment = new CalendrierFragment();
+        // Cacher les horaires au début
+        scrollViewHoraires.setVisibility(View.GONE);
+
+        // Initialiser le fragment calendrier avec le rôle étudiant
+        calendrierFragment = CalendrierFragment.newInstance("etudiant");
+
+        // Définir un listener pour les clics sur les dates vertes
+        // Initialiser le fragment et le listener
+        calendrierFragment = CalendrierFragment.newInstance("etudiant");
+        calendrierFragment.setOnDateClickListener((jour, mois, annee) -> {
+            jourActuel = jour;
+            moisActuel = mois;
+            anneeActuel = annee;
+
+            // Récupérer directement les événements du fragment
+            List<CalendrierFragment.Evenement> evenements =
+                    calendrierFragment.getEvenementsPourDate(jour, mois, annee);
+
+            if (!evenements.isEmpty()) {
+                // Convertir et afficher
+                evenementsDuJour.clear();
+                for (CalendrierFragment.Evenement evt : evenements) {
+                    evenementsDuJour.add(new Evenement(evt.id, evt.titre, evt.horaire));
+                }
+                afficherListeHoraires();
+                scrollViewHoraires.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(this, "Aucun cours pour cette date", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, calendrierFragment)
                 .commit();
-
-        // Écouter les changements dans l'EditText
-        etDate.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String dateTexte = s.toString().trim();
-                if (!dateTexte.isEmpty()) {
-                    String[] parties = dateTexte.split("/");
-                    if (parties.length == 3) {
-                        try {
-                            int jour = Integer.parseInt(parties[0]);
-                            int mois = Integer.parseInt(parties[1]);
-                            int annee = Integer.parseInt(parties[2]);
-
-                            // ✅ SIMULER UN CLIC SUR LE BOUTON CORRESPONDANT
-                            if (calendrierFragment != null && calendrierFragment.getView() != null) {
-                                simulerClicSurJour(jour, mois, annee);
-                            }
-                        } catch (NumberFormatException e) {
-                            Toast.makeText(Potager_coursJardinageActivity.this,
-                                    "Format incorrect. Utilisez JJ/MM/AAAA",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            }
-        });
     }
 
     /**
-     * Simule un clic sur le bouton du jour correspondant
+     * Affiche tous les horaires de jardinage pour une date donnée
      */
-    private void simulerClicSurJour(int jour, int mois, int annee) {
-        // Accéder à la vue du fragment
-        View fragmentView = calendrierFragment.getView();
-        if (fragmentView == null) return;
+    private void afficherHorairesPourDate(int jour, int mois, int annee) {
+        // Vider le conteneur
+        containerHoraires.removeAllViews();
+        chargerEvenementsDepuisBDD(jour, mois, annee);
+    }
 
-        // Trouver le conteneur des boutons (c'est votre "container")
-        // Cette partie dépend de la structure exacte de votre fragment
-        LinearLayout container = fragmentView.findViewById(android.R.id.content); // À adapter !
+    /**
+     * Charge les événements depuis la BDD pour une date spécifique
+     */
+    private void chargerEvenementsDepuisBDD(int jour, int mois, int annee) {
+        String url = "http://192.168.1.40/eatgreen_api/get_evenement_par_date.php?jour=" + jour +
+                "&mois=" + mois + "&annee=" + annee;
 
-        // Parcourir toutes les lignes et boutons pour trouver le bon
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View child = container.getChildAt(i);
-            if (child instanceof LinearLayout) {
-                LinearLayout ligne = (LinearLayout) child;
-                for (int j = 0; j < ligne.getChildCount(); j++) {
-                    View bouton = ligne.getChildAt(j);
-                    if (bouton instanceof EditText) {
-                        // Vérifier si c'est le bon bouton (avec le bon numéro)
-                        Button btn = (Button) bouton;
-                        String texte = btn.getText().toString();
-                        if (texte.equals(String.valueOf(jour))) {
-                            // Simuler le clic
-                            btn.performClick();
-                            return;
+        com.android.volley.RequestQueue requestQueue = com.android.volley.toolbox.Volley.newRequestQueue(this);
+
+        com.android.volley.toolbox.JsonArrayRequest request = new com.android.volley.toolbox.JsonArrayRequest(
+                com.android.volley.Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        evenementsDuJour.clear();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            Evenement evt = new Evenement(
+                                    obj.getInt("id"),
+                                    obj.getString("titre"),
+                                    obj.getString("horaire")
+                            );
+                            evenementsDuJour.add(evt);
                         }
+
+                        if (evenementsDuJour.isEmpty()) {
+                            scrollViewHoraires.setVisibility(View.GONE);
+                            Toast.makeText(this, "Aucun cours disponible pour cette date", Toast.LENGTH_SHORT).show();
+                        } else {
+                            scrollViewHoraires.setVisibility(View.VISIBLE);
+                            afficherListeHoraires();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Erreur de chargement", Toast.LENGTH_SHORT).show();
                     }
+                },
+                error -> {
+                    Toast.makeText(this, "Erreur réseau", Toast.LENGTH_SHORT).show();
                 }
+        );
+
+        requestQueue.add(request);
+    }
+
+    /**
+     * Affiche la liste des horaires disponibles
+     */
+    private void afficherListeHoraires() {
+        containerHoraires.removeAllViews();
+
+        // Titre avec la date
+        TextView tvTitreSection = new TextView(this);
+        tvTitreSection.setText("Cours du " + jourActuel + "/" + moisActuel + "/" + anneeActuel + " :");
+        tvTitreSection.setTextSize(18);
+        tvTitreSection.setTypeface(null, android.graphics.Typeface.BOLD);
+        tvTitreSection.setTextColor(getResources().getColor(android.R.color.black));
+        tvTitreSection.setPadding(0, 16, 0, 16);
+        containerHoraires.addView(tvTitreSection);
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm:ss", Locale.FRENCH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+
+        for (Evenement evt : evenementsDuJour) {
+            // Créer un layout horizontal
+            LinearLayout itemLayout = new LinearLayout(this);
+            itemLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+            itemLayout.setPadding(16, 16, 16, 16);
+            itemLayout.setBackgroundResource(android.R.drawable.list_selector_background);
+            itemLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+            // Marge entre les items
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) itemLayout.getLayoutParams();
+            params.setMargins(0, 0, 0, 8);
+            itemLayout.setLayoutParams(params);
+
+            // Formatage de l'heure
+            String heureFormatee = evt.horaire;
+            try {
+                Date date = inputFormat.parse(evt.horaire);
+                if (date != null) {
+                    heureFormatee = outputFormat.format(date);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+
+            // Variables finales pour le clic
+            final int evenementId = evt.id;
+            final String heureFinale = heureFormatee;
+            final String titreFinal = evt.titre;
+
+            // TextView heure
+            TextView tvHeure = new TextView(this);
+            tvHeure.setLayoutParams(new LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1
+            ));
+            tvHeure.setText(heureFinale);
+            tvHeure.setTextSize(18);
+            tvHeure.setTextColor(getResources().getColor(android.R.color.black));
+            tvHeure.setTypeface(null, android.graphics.Typeface.BOLD);
+
+            // TextView titre
+            TextView tvTitre = new TextView(this);
+            tvTitre.setLayoutParams(new LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    2
+            ));
+            tvTitre.setText(titreFinal);
+            tvTitre.setTextSize(16);
+            tvTitre.setTextColor(getResources().getColor(android.R.color.darker_gray));
+
+            // Bouton inscription
+            Button btnInscrire = new Button(this);
+            btnInscrire.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            btnInscrire.setText("S'inscrire");
+            btnInscrire.setTextSize(12);
+            btnInscrire.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            btnInscrire.setTextColor(getResources().getColor(android.R.color.white));
+
+            // Clic sur le bouton d'inscription
+            btnInscrire.setOnClickListener(v -> {
+                Toast.makeText(Potager_coursJardinageActivity.this,
+                        "Inscription à " + heureFinale + " (" + titreFinal + ")",
+                        Toast.LENGTH_SHORT).show();
+
+                // TODO: Ajouter la logique d'inscription en BDD
+                // inscrireUtilisateur(evenementId);
+            });
+
+            itemLayout.addView(tvHeure);
+            itemLayout.addView(tvTitre);
+            itemLayout.addView(btnInscrire);
+
+            containerHoraires.addView(itemLayout);
         }
     }
 }

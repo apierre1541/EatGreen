@@ -1,9 +1,11 @@
 package com.example.eatgreen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +18,26 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 
-import com.example.eatgreen.databinding.ActivityPotagerCoursJardinageBinding;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class CalendrierFragment extends Fragment {
 
@@ -35,13 +48,52 @@ public class CalendrierFragment extends Fragment {
     private int anneeActuelle;
     private int moisActuel;
 
-    // URL pour récupérer les événements depuis l'API
+    // URLs API
     private static final String GET_EVENTS_URL = "http://192.168.1.40/eatgreen_api/get_evenement.php";
+    private static final String GET_DATES_VERTES_URL = "http://192.168.1.40/eatgreen_api/get_dates_vertes.php";
+    private static final String AJOUTER_DATE_VERTE_URL = "http://192.168.1.40/eatgreen_api/ajouter_date_verte.php";
 
-    // Variables pour la date à surligner
-    private int jourSurligne = -1;
-    private int moisSurligne = -1;
-    private int anneeSurligne = -1;
+    // Variables
+    private Set<String> datesEnVert = new HashSet<>();
+    private int utilisateurId;
+    private String role;
+    private RequestQueue requestQueue;
+
+    // Stockage des événements
+    private Map<String, List<Evenement>> evenementsParDate = new HashMap<>();
+
+    // Interface pour communiquer avec l'activité
+    public interface OnDateClickListener {
+        void onDateClick(int jour, int mois, int annee);
+    }
+
+    private OnDateClickListener dateClickListener;
+
+    public void setOnDateClickListener(OnDateClickListener listener) {
+        this.dateClickListener = listener;
+    }
+
+    // Classe interne pour les événements
+    class Evenement {
+        int id;
+        String titre;
+        String horaire;
+
+        Evenement(int id, String titre, String horaire) {
+            this.id = id;
+            this.titre = titre;
+            this.horaire = horaire;
+        }
+    }
+
+    // Factory method pour créer le fragment avec le rôle
+    public static CalendrierFragment newInstance(String role) {
+        CalendrierFragment fragment = new CalendrierFragment();
+        Bundle args = new Bundle();
+        args.putString("role", role);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public CalendrierFragment() {
         // Constructeur vide requis
@@ -51,7 +103,21 @@ public class CalendrierFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup containerBundle,
                              Bundle savedInstanceState) {
 
-        // 1. Créer le layout principal du fragment
+        // Récupérer le rôle
+        if (getArguments() != null) {
+            role = getArguments().getString("role", "etudiant");
+        }
+
+        // Récupérer l'ID de l'utilisateur
+        SharedPreferences prefs = getActivity().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
+        utilisateurId = prefs.getInt("user_id", 0);
+        requestQueue = Volley.newRequestQueue(getContext());
+
+        // Charger les données
+        chargerDatesVertes();
+        chargerTousEvenements();
+
+        // Créer le layout principal
         LinearLayout layoutPrincipal = new LinearLayout(getContext());
         layoutPrincipal.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -60,7 +126,7 @@ public class CalendrierFragment extends Fragment {
         layoutPrincipal.setOrientation(LinearLayout.VERTICAL);
         layoutPrincipal.setPadding(16, 16, 16, 16);
 
-        // 2. Créer la ligne de navigation (mois précédent/suivant)
+        // Ligne de navigation
         LinearLayout ligneNavigation = new LinearLayout(getContext());
         ligneNavigation.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -92,7 +158,7 @@ public class CalendrierFragment extends Fragment {
         ligneNavigation.addView(btnMoisSuivant);
         layoutPrincipal.addView(ligneNavigation);
 
-        // 3. Créer la ligne des jours de la semaine
+        // Jours de la semaine
         LinearLayout ligneJours = new LinearLayout(getContext());
         ligneJours.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -117,7 +183,7 @@ public class CalendrierFragment extends Fragment {
         }
         layoutPrincipal.addView(ligneJours);
 
-        // 4. Conteneur pour les boutons des jours
+        // Conteneur pour les jours
         container = new LinearLayout(getContext());
         container.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -126,15 +192,15 @@ public class CalendrierFragment extends Fragment {
         container.setOrientation(LinearLayout.VERTICAL);
         layoutPrincipal.addView(container);
 
-        // 5. Initialiser la date
+        // Initialiser la date
         Calendar calendar = Calendar.getInstance();
         anneeActuelle = calendar.get(Calendar.YEAR);
         moisActuel = calendar.get(Calendar.MONTH) + 1;
 
-        // 6. Afficher le premier mois
+        // Afficher le premier mois
         afficherMois(anneeActuelle, moisActuel);
 
-        // 7. Gestionnaires de clic
+        // Navigation mois
         btnMoisPrecedent.setOnClickListener(v -> {
             moisActuel--;
             if (moisActuel < 1) {
@@ -153,84 +219,99 @@ public class CalendrierFragment extends Fragment {
             afficherMois(anneeActuelle, moisActuel);
         });
 
-        // 8. Bouton pour voir les événements créés
-        Button btnVoirEvenements = new Button(getContext());
-        btnVoirEvenements.setText("Voir événements");
-        btnVoirEvenements.setTextColor(Color.WHITE);
-        btnVoirEvenements.setBackgroundColor(Color.DKGRAY);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.topMargin = 16; // décoller un peu du calendrier
-        btnVoirEvenements.setLayoutParams(params);
-        layoutPrincipal.addView(btnVoirEvenements);
-
-        // 9. Appel quand on clique pour récupérer les événements et passer à l'activité d'affichage
-        btnVoirEvenements.setOnClickListener(v -> {
-            new Thread(() -> {
-                try {
-                    URL url = new URL(GET_EVENTS_URL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setDoInput(true);
-
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        response.append(line);
-                    }
-                    br.close();
-                    conn.disconnect();
-
-                    String json = response.toString();
-
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            Intent intent = new Intent(getActivity(), EvenementsActivity.class);
-                            intent.putExtra("jsonEvenements", json);
-                            startActivity(intent);
-                        });
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() ->
-                                Toast.makeText(getContext(), "Erreur GET", Toast.LENGTH_SHORT).show()
-                        );
-                    }
-                }
-            }).start();
-        });
-
         return layoutPrincipal;
     }
 
     /**
-     * Affiche le mois et crée les boutons
+     * Charge tous les événements
+     */
+    private void chargerTousEvenements() {
+        String url = GET_EVENTS_URL;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        evenementsParDate.clear();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            int id = obj.getInt("id");
+                            String titre = obj.getString("titre");
+                            String horaire = obj.getString("horaire");
+                            int jour = obj.getInt("jour");
+                            int mois = obj.getInt("mois");
+                            int annee = obj.getInt("annee");
+
+                            String dateKey = jour + "/" + mois + "/" + annee;
+
+                            if (!evenementsParDate.containsKey(dateKey)) {
+                                evenementsParDate.put(dateKey, new ArrayList<>());
+                            }
+                            evenementsParDate.get(dateKey).add(new Evenement(id, titre, horaire));
+                        }
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> afficherMois(anneeActuelle, moisActuel));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Log.e("CALENDRIER", "Erreur chargement événements", error)
+        );
+
+        requestQueue.add(request);
+    }
+
+    /**
+     * Charge les dates vertes
+     */
+    private void chargerDatesVertes() {
+        String url = GET_DATES_VERTES_URL + "?user_id=" + utilisateurId;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        if (response.getBoolean("success")) {
+                            JSONArray dates = response.getJSONArray("dates");
+                            datesEnVert.clear();
+                            for (int i = 0; i < dates.length(); i++) {
+                                JSONObject obj = dates.getJSONObject(i);
+                                String dateKey = obj.getInt("jour") + "/" +
+                                        obj.getInt("mois") + "/" +
+                                        obj.getInt("annee");
+                                datesEnVert.add(dateKey);
+                            }
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(() -> afficherMois(anneeActuelle, moisActuel));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Log.e("CALENDRIER", "Erreur chargement dates vertes", error)
+        );
+
+        requestQueue.add(request);
+    }
+
+    /**
+     * Affiche le mois
      */
     private void afficherMois(int annee, int mois) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(annee, mois - 1, 1);
-
-        // Formater et afficher le mois/année
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", Locale.FRENCH);
         t2.setText(sdf.format(calendar.getTime()));
-
-        // Créer les boutons pour ce mois
         creerBoutonsPourMois(annee, mois);
     }
 
     /**
-     * Crée les boutons pour tous les jours du mois
+     * Crée les boutons des jours (SANS points rouges)
      */
     private void creerBoutonsPourMois(int annee, int mois) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(annee, mois - 1, 1);
         int nombreJours = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-
         int joursParSemaine = 7;
         container.removeAllViews();
 
@@ -249,39 +330,62 @@ public class CalendrierFragment extends Fragment {
             }
 
             Button btn = new Button(getContext());
-            btn.setLayoutParams(new LinearLayout.LayoutParams(
-                    0,
-                    100,
-                    1
-            ));
+            btn.setLayoutParams(new LinearLayout.LayoutParams(0, 100, 1));
             btn.setText(String.valueOf(i));
             btn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-            // Couleur par défaut (bleu)
-            btn.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_blue_light));
-            btn.setTextColor(Color.WHITE);
 
             final int jour = i;
             final int moisFinal = mois;
             final int anneeFinal = annee;
+            String dateKey = jour + "/" + moisFinal + "/" + anneeFinal;
+
+            // ✅ LOGIQUE CORRECTE POUR LES COULEURS
+            if ("admin".equals(role)) {
+                // Pour l'admin : les dates qu'il a marquées en vert
+                if (datesEnVert.contains(dateKey)) {
+                    btn.setBackgroundColor(Color.GREEN);
+                    btn.setTextColor(Color.BLACK);
+                } else {
+                    btn.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_blue_light));
+                    btn.setTextColor(Color.WHITE);
+                }
+            } else {
+                // Pour l'étudiant : les dates qui ont des événements (créés par admin)
+                if (evenementsParDate.containsKey(dateKey)) {
+                    btn.setBackgroundColor(Color.GREEN);  // ← VERT pour les cours disponibles
+                    btn.setTextColor(Color.BLACK);
+                } else {
+                    btn.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_blue_light));
+                    btn.setTextColor(Color.WHITE);
+                }
+            }
 
             btn.setOnClickListener(v -> {
-                reinitialiserCouleurs(); // Réinitialiser tous les boutons en bleu
-
-                v.setBackgroundColor(Color.GREEN); // Mettre le bouton cliqué en vert
-                ((Button) v).setTextColor(Color.BLACK);
-
-                jourSurligne = jour;
-                moisSurligne = moisFinal;
-                anneeSurligne = anneeFinal;
-
+                // ACTION SELON LE RÔLE
                 if (getActivity() != null) {
-                    Intent intent = new Intent(getActivity(), FormCalendrierActivity.class);
-                    intent.putExtra("jour", jour);
-                    intent.putExtra("mois", moisFinal);
-                    intent.putExtra("annee", anneeFinal);
-                    intent.putExtra("date", jour + "/" + moisFinal + "/" + anneeFinal);
-                    startActivity(intent);
+                    if ("admin".equals(role)) {
+                        // Admin : marque en vert et ouvre formulaire
+                        if (!datesEnVert.contains(dateKey)) {
+                            marquerDateVerte(jour, moisFinal, anneeFinal, btn);
+                        }
+                        Intent intent = new Intent(getActivity(), FormCalendrierActivity.class);
+                        intent.putExtra("jour", jour);
+                        intent.putExtra("mois", moisFinal);
+                        intent.putExtra("annee", anneeFinal);
+                        intent.putExtra("date", dateKey);
+                        intent.putExtra("role", role);
+                        startActivity(intent);
+                    } else {
+                        // ÉTUDIANT : vérifie s'il y a des événements
+                        if (evenementsParDate.containsKey(dateKey)) {
+                            // Utiliser le listener
+                            if (dateClickListener != null) {
+                                dateClickListener.onDateClick(jour, moisFinal, anneeFinal);
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Aucun cours pour cette date", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             });
 
@@ -290,58 +394,44 @@ public class CalendrierFragment extends Fragment {
     }
 
     /**
-     * Réinitialise tous les boutons en bleu
+     * Marque une date en vert
      */
-    private void reinitialiserCouleurs() {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            LinearLayout ligne = (LinearLayout) container.getChildAt(i);
-            for (int j = 0; j < ligne.getChildCount(); j++) {
-                View vue = ligne.getChildAt(j);
-                if (vue instanceof Button) {
-                    vue.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_blue_light));
-                    ((Button) vue).setTextColor(Color.WHITE);
-                }
+    private void marquerDateVerte(int jour, int mois, int annee, Button btn) {
+        String url = AJOUTER_DATE_VERTE_URL;
+
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    try {
+                        JSONObject json = new JSONObject(response);
+                        if (json.getBoolean("success")) {
+                            String dateKey = jour + "/" + mois + "/" + annee;
+                            datesEnVert.add(dateKey);
+                            btn.setBackgroundColor(Color.GREEN);
+                            btn.setTextColor(Color.BLACK);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(getContext(), "Erreur réseau", Toast.LENGTH_SHORT).show()
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", String.valueOf(utilisateurId));
+                params.put("jour", String.valueOf(jour));
+                params.put("mois", String.valueOf(mois));
+                params.put("annee", String.valueOf(annee));
+                return params;
             }
-        }
+        };
+
+        requestQueue.add(request);
     }
 
-    /**
-     * Récupère les événements depuis l'API et affiche le JSON dans un toast (pour test)
-     */
-    private void recupererEvenements() {
-        new Thread(() -> {
-            try {
-                URL url = new URL(GET_EVENTS_URL);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    response.append(line);
-                }
-                br.close();
-                conn.disconnect();
-
-                String json = response.toString();
-
-                // Afficher le JSON reçu dans un toast pour test
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), "JSON reçu : " + json, Toast.LENGTH_LONG).show()
-                    );
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), "Erreur GET", Toast.LENGTH_SHORT).show()
-                    );
-                }
-            }
-        }).start();
+    // Méthode pour obtenir les événements d'une date (utile pour l'activité)
+    public List<Evenement> getEvenementsPourDate(int jour, int mois, int annee) {
+        String dateKey = jour + "/" + mois + "/" + annee;
+        return evenementsParDate.getOrDefault(dateKey, new ArrayList<>());
     }
 }

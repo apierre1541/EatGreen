@@ -51,6 +51,7 @@
         <activity android:name=".PanierActivity" />
         <activity android:name=".CommanderActivity" />
         <activity android:name=".PaymentActivity" />
+        <activity android:name=".Publier_coursJardinageActivity" />
     </application>
 
 </manifest>

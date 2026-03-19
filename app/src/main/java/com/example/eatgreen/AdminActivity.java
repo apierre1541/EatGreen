@@ -69,7 +69,7 @@ public class AdminActivity extends AppCompatActivity {
 
         // Boutons Potager et Stats (Visuels uniquement, comme demandé)
         btnPotager.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminActivity.this, Potager_coursJardinageActivity.class);
+            Intent intent = new Intent(AdminActivity.this, Publier_coursJardinageActivity.class);
             startActivity(intent);
         });
         btnStats.setOnClickListener(v -> {
