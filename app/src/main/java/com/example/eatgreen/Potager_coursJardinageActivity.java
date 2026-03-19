@@ -56,34 +56,41 @@ public class Potager_coursJardinageActivity extends AppCompatActivity {
         // Cacher les horaires au début
         scrollViewHoraires.setVisibility(View.GONE);
 
-        // Initialiser le fragment calendrier avec le rôle étudiant
+        // ✅ 1. D'ABORD initialiser le fragment
         calendrierFragment = CalendrierFragment.newInstance("etudiant");
 
-        // Définir un listener pour les clics sur les dates vertes
-        // Initialiser le fragment et le listener
-        calendrierFragment = CalendrierFragment.newInstance("etudiant");
+        // ✅ 2. ENSUITE définir le listener
         calendrierFragment.setOnDateClickListener((jour, mois, annee) -> {
-            jourActuel = jour;
-            moisActuel = mois;
-            anneeActuel = annee;
+            // Ouvrir une autre activité avec les détails
+            Intent intent = new Intent(Potager_coursJardinageActivity.this, Inscription_coursJardinageActivity.class);
+            intent.putExtra("jour", jour);
+            intent.putExtra("mois", mois);
+            intent.putExtra("annee", annee);
 
-            // Récupérer directement les événements du fragment
+            // Optionnel : passer la liste des événements
             List<CalendrierFragment.Evenement> evenements =
                     calendrierFragment.getEvenementsPourDate(jour, mois, annee);
 
             if (!evenements.isEmpty()) {
-                // Convertir et afficher
-                evenementsDuJour.clear();
-                for (CalendrierFragment.Evenement evt : evenements) {
-                    evenementsDuJour.add(new Evenement(evt.id, evt.titre, evt.horaire));
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    for (CalendrierFragment.Evenement evt : evenements) {
+                        JSONObject obj = new JSONObject();
+                        obj.put("id", evt.id);
+                        obj.put("titre", evt.titre);
+                        obj.put("horaire", evt.horaire);
+                        jsonArray.put(obj);
+                    }
+                    intent.putExtra("evenements", jsonArray.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                afficherListeHoraires();
-                scrollViewHoraires.setVisibility(View.VISIBLE);
-            } else {
-                Toast.makeText(this, "Aucun cours pour cette date", Toast.LENGTH_SHORT).show();
             }
+
+            startActivity(intent);
         });
 
+        // ✅ 3. ENFIN ajouter le fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, calendrierFragment)
                 .commit();

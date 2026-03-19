@@ -52,6 +52,7 @@
         <activity android:name=".CommanderActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".Publier_coursJardinageActivity" />
+        <activity android:name=".Inscription_coursJardinageActivity" />
     </application>
 
 </manifest>
