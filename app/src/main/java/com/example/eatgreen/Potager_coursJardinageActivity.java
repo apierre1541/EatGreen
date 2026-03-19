@@ -240,6 +240,7 @@ public class Potager_coursJardinageActivity extends AppCompatActivity {
                         "Inscription à " + heureFinale + " (" + titreFinal + ")",
                         Toast.LENGTH_SHORT).show();
 
+
                 // TODO: Ajouter la logique d'inscription en BDD
                 // inscrireUtilisateur(evenementId);
             });

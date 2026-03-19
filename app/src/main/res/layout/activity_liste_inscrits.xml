@@ -7,11 +7,11 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tv_date"
+        android:id="@+id/tv_titre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cours du ..."
-        android:textSize="22sp"
+        android:text="Inscrits du ..."
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#4CAF50"
         android:gravity="center"
@@ -22,7 +22,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/container_cours"
+            android:id="@+id/container_inscrits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
