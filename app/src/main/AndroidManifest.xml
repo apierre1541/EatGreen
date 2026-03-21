@@ -68,6 +68,9 @@
         <activity android:name=".ListeInscritCoursJardinageActivity" />
         <activity android:name=".MapComposteActivity" />
         <activity android:name=".PublierPointComposteActivity" />
+        <activity android:name=".PreferencesAlimentairesActivity" />
+        <activity android:name=".IntolerancesActivity" />
+        <activity android:name=".AllergiesActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

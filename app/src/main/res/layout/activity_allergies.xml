@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vos allergies"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sélectionnez vos allergies (plusieurs choix possibles)"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/allergie_arachide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Arachide"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/allergie_gluten"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gluten"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/allergie_lactose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lactose"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/allergie_fruits_mer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fruits de mer"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/allergie_oeufs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Œufs"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/allergie_soja"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Soja"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/autre_allergie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Autre allergie (précisez)"
+                android:padding="12dp"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_enregistrer_allergies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enregistrer vos allergies"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

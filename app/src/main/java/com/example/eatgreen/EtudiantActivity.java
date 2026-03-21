@@ -45,8 +45,13 @@ public class EtudiantActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // 1. Gestion des 4 boutons centraux
-        btnPreference.setOnClickListener(v -> Toast.makeText(this, "Préférence Alimentaire", Toast.LENGTH_SHORT).show());
+        btnPreference.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(EtudiantActivity.this, PreferencesAlimentairesActivity.class);
+                startActivity(i);
+            }
+        });
         btnProgramme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
