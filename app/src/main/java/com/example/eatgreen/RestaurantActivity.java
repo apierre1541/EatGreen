@@ -60,15 +60,22 @@ public class RestaurantActivity extends AppCompatActivity {
             intent.putExtra("restaurant_id", idResto);
             startActivity(intent);
         });
+        b5.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+       });
+        b3.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantActivity.this, PublierPanierActivity.class);
+            intent.putExtra("restaurant_id", idResto);
+            startActivity(intent);
+        });
 
-        // BOUTON DÉCONNEXION
-        //btnDeconnexion.setOnClickListener(v -> {
-            //Intent intent = new Intent(RestaurantActivity.this, LoginActivity.class);
-          //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-           // startActivity(intent);
-           // finish();
-       // });
-
-        //btnPublierRepas.setOnClickListener(v -> Toast.makeText(this, "Bientôt disponible", Toast.LENGTH_SHORT).show());
+        b2.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantActivity.this, RestaurantActivity.class);
+            intent.putExtra("restaurant_id", idResto);
+            startActivity(intent);
+        });
     }
 }
