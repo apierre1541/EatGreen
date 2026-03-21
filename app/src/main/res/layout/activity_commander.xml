@@ -3,22 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="#F5F5F5">
 
-    <TextView
+    <!-- En-tête avec les informations -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choisissez un créneau"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#4CAF50"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"/>
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@color/teal_700">
 
+        <TextView
+            android:id="@+id/tv_titre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choisissez votre créneau"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/tv_restaurant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- ScrollView pour les horaires -->
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/layout_horaires"

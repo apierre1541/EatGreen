@@ -1,4 +1,3 @@
-
 package com.example.eatgreen;
 
 import android.annotation.SuppressLint;
@@ -24,9 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-
 
 public class PanierActivity extends AppCompatActivity {
 
@@ -37,6 +34,7 @@ public class PanierActivity extends AppCompatActivity {
     private int restaurantId = 0;
     private int utilisateurId;
     private String nomRestaurant = "";
+    private double totalGeneral = 0;  // ← Ajouter cette variable pour stocker le total
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -55,6 +53,7 @@ public class PanierActivity extends AppCompatActivity {
         chargerPanier();
 
         btnVider.setOnClickListener(v -> viderPanier());
+
         btnCommander.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,19 +63,17 @@ public class PanierActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Extraire le total du TextView
-                String totalStr = tvTotal.getText().toString().replace("Total: ", "").replace("€", "").trim();
-                double totalValue = 0;
-                try {
-                    totalValue = Double.parseDouble(totalStr);
-                } catch (NumberFormatException e) {
-                    totalValue = 0;
-                }
+                // Utiliser la variable totalGeneral au lieu d'extraire du TextView
+                Log.d("PANIER", "=== ENVOI VERS CommanderActivity ===");
+                Log.d("PANIER", "restaurantId: " + restaurantId);
+                Log.d("PANIER", "nomRestaurant: " + nomRestaurant);
+                Log.d("PANIER", "totalGeneral: " + totalGeneral);
+                Log.d("PANIER", "====================================");
 
                 Intent intent = new Intent(PanierActivity.this, CommanderActivity.class);
                 intent.putExtra("restaurant_id", restaurantId);
                 intent.putExtra("nom_restaurant", nomRestaurant);
-                intent.putExtra("total", totalValue);
+                intent.putExtra("total", totalGeneral);  // ← Utiliser totalGeneral
                 startActivity(intent);
             }
         });
@@ -92,14 +89,15 @@ public class PanierActivity extends AppCompatActivity {
 
                         if (response.getBoolean("success")) {
 
+                            // Récupérer le total directement depuis la réponse
+                            totalGeneral = response.optDouble("total", 0);  // ← Stocker dans la variable
+
                             JSONArray articles = response.optJSONArray("articles");
 
                             if (articles == null || articles.length() == 0) {
                                 afficherPanierVide();
                                 return;
                             }
-
-                            double totalGeneral = 0;
 
                             for (int i = 0; i < articles.length(); i++) {
                                 JSONObject article = articles.getJSONObject(i);
@@ -115,12 +113,10 @@ public class PanierActivity extends AppCompatActivity {
                                 double totalLigne = article.optDouble("total_ligne", 0);
                                 int articleId = article.optInt("article_id", 0);
 
-                                // ✅ Récupération de l'ID restaurant et du nom restaurant POUR LE PREMIER ARTICLE
+                                // Récupération des infos restaurant
                                 if (i == 0) {
-                                    restaurantId = article.optInt("restaurant_id", 0);
-                                    nomRestaurant = article.optString("nom_restaurant", "Restaurant inconnu");
-
-                                    // Log pour vérifier
+                                    restaurantId = response.optInt("restaurant_id", 0);
+                                    nomRestaurant = response.optString("nom_restaurant", "Restaurant inconnu");
                                     Log.d("PANIER", "Restaurant: " + nomRestaurant + " (ID: " + restaurantId + ")");
                                 }
 
@@ -132,10 +128,11 @@ public class PanierActivity extends AppCompatActivity {
                                 btnRetirer.setOnClickListener(v -> retirerArticle(finalArticleId));
 
                                 layoutPanier.addView(itemView);
-                                totalGeneral += totalLigne;
                             }
 
+                            // Afficher le total
                             tvTotal.setText(String.format("Total: %.2f€", totalGeneral));
+                            Log.d("PANIER", "Total récupéré: " + totalGeneral);
 
                         } else {
                             afficherPanierVide();
@@ -157,6 +154,7 @@ public class PanierActivity extends AppCompatActivity {
 
     private void afficherPanierVide() {
         layoutPanier.removeAllViews();
+        totalGeneral = 0;  // ← Réinitialiser le total
         TextView tvVide = new TextView(this);
         tvVide.setText("Votre panier est vide");
         tvVide.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -202,10 +200,6 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void viderPanier() {
-        Toast.makeText(this, "Fonction à implémenter", Toast.LENGTH_SHORT).show();
-    }
-
-    private void validerPanier() {
         Toast.makeText(this, "Fonction à implémenter", Toast.LENGTH_SHORT).show();
     }
 }
