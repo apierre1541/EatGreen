@@ -65,7 +65,14 @@
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Inscrit cours jardinage "
+        android:text="Inscrit cours jardinage"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+    <Button
+        android:id="@+id/b8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ajout des points de composte"
         android:textAllCaps="false"
         android:layout_marginBottom="10dp"/>
 

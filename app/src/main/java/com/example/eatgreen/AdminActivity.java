@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AdminActivity extends AppCompatActivity {
 
     private TextView tvWelcome, tvEmail;
-    private Button btnDeconnexion, btnEditerProfil, btnGestionUtilisateurs, btnPotager, btnStats, btn;
+    private Button btnDeconnexion, btnEditerProfil, btnGestionUtilisateurs, btnPotager, btnStats, btn, b8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class AdminActivity extends AppCompatActivity {
         btnPotager = findViewById(R.id.btnPotager);
         btnStats = findViewById(R.id.btnStatsGlobales);
         btn = findViewById(R.id.btn);
+        b8 = findViewById(R.id.b8);
     }
 
     private void displayUserInfo() {
@@ -80,6 +81,11 @@ public class AdminActivity extends AppCompatActivity {
 
         btn.setOnClickListener(v -> {
             Intent intent = new Intent(AdminActivity.this, ListeInscritCoursJardinageActivity.class);
+            startActivity(intent);
+        });
+
+        b8.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, PublierPointComposteActivity.class);
             startActivity(intent);
         });
     }

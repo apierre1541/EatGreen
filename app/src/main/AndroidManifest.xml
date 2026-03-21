@@ -67,6 +67,7 @@
         <activity android:name=".Inscription_coursJardinageActivity" />
         <activity android:name=".ListeInscritCoursJardinageActivity" />
         <activity android:name=".MapComposteActivity" />
+        <activity android:name=".PublierPointComposteActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
