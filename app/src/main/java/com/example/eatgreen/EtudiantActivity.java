@@ -54,7 +54,13 @@ public class EtudiantActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btnCarte.setOnClickListener(v -> Toast.makeText(this, "Carte composte", Toast.LENGTH_SHORT).show());
+        btnCarte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(EtudiantActivity.this, MapComposteActivity.class);
+                startActivity(i);
+            }
+        });
         btnRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

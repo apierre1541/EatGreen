@@ -15,6 +15,8 @@
 
     <uses-permission android:name="com.example.eatgreen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- APPLICATION (tout le reste doit être DANS application) -->
     <application
         android:allowBackup="true"
@@ -64,8 +66,8 @@
         <activity android:name=".Publier_coursJardinageActivity" />
         <activity android:name=".Inscription_coursJardinageActivity" />
         <activity android:name=".ListeInscritCoursJardinageActivity" />
+        <activity android:name=".MapComposteActivity" />
 
-        <!-- FILEPROVIDER - ICI à l'intérieur de application (CORRECT) -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.eatgreen.fileprovider"
