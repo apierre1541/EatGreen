@@ -1,7 +1,9 @@
 package com.example.eatgreen;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -22,6 +24,8 @@ import java.util.Map;
 
 public class PaymentActivity extends AppCompatActivity {
 
+    private static final String TAG = "PAYMENT_ACTIVITY";
+
     private TextView tvDate, tvHeure, tvNomRestaurant, tvTotalCommande;
     private RadioGroup radioGroupPaiement;
     private Button btnConfirmer, btnAnnuler;
@@ -31,6 +35,8 @@ public class PaymentActivity extends AppCompatActivity {
     private int restaurantId;
     private double totalPayer;
     private int utilisateurId;
+    private String email;
+    private String nomRestaurant;
     private RequestQueue requestQueue;
 
     @Override
@@ -52,7 +58,8 @@ public class PaymentActivity extends AppCompatActivity {
         date = getIntent().getStringExtra("date");
         heure = getIntent().getStringExtra("heure");
         restaurantId = getIntent().getIntExtra("restaurant_id", 0);
-        tvNomRestaurant.setText(getIntent().getStringExtra("nom_restaurant"));
+        nomRestaurant = getIntent().getStringExtra("nom_restaurant");
+        tvNomRestaurant.setText(nomRestaurant);
         totalPayer = getIntent().getDoubleExtra("total", 0.0);
 
         // Afficher le total
@@ -60,9 +67,35 @@ public class PaymentActivity extends AppCompatActivity {
         tvDate.setText(date);
         tvHeure.setText(heure);
 
-        // Récupérer l'ID de l'utilisateur connecté
+        // Récupérer l'ID et l'email de l'utilisateur connecté
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         utilisateurId = prefs.getInt("user_id", 0);
+        email = prefs.getString("user_email", "");
+
+        // Vérifier l'email
+        if (email == null || email.isEmpty()) {
+            email = getIntent().getStringExtra("email");
+            if (email == null || email.isEmpty()) {
+                Log.e(TAG, "ERREUR: Email non trouvé !");
+                Toast.makeText(this, "Erreur: Email utilisateur non trouvé", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        }
+
+        Log.d(TAG, "=== DONNÉES RÉCUPÉRÉES ===");
+        Log.d(TAG, "utilisateurId: " + utilisateurId);
+        Log.d(TAG, "email: " + email);
+        Log.d(TAG, "horaireId: " + horaireId);
+        Log.d(TAG, "restaurantId: " + restaurantId);
+        Log.d(TAG, "nomRestaurant: " + nomRestaurant);
+        Log.d(TAG, "date: " + date);
+        Log.d(TAG, "heure: " + heure);
+        Log.d(TAG, "totalPayer: " + totalPayer);
+        Log.d(TAG, "=========================");
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -74,20 +107,30 @@ public class PaymentActivity extends AppCompatActivity {
             int selectedId = radioGroupPaiement.getCheckedRadioButtonId();
 
             if (selectedId == R.id.radioCB) {
-                Toast.makeText(this,
-                        "Merci pour votre commande ! Vous paierez directement sur place.",
-                        Toast.LENGTH_LONG).show();
-                enregistrerCommande("CB");
+                Intent intent = new Intent(this, CbCommandeActivity.class);
+                intent.putExtra("utilisateur_id", utilisateurId);
+                intent.putExtra("email", email);
+                intent.putExtra("horaire_id", horaireId);
+                intent.putExtra("restaurant_id", restaurantId);
+                intent.putExtra("nom_restaurant", nomRestaurant);
+                intent.putExtra("date", date);
+                intent.putExtra("heure", heure);
+                intent.putExtra("total", totalPayer);
+                startActivity(intent);
+                finish();
+
             } else if (selectedId == R.id.radioPaypal) {
-                Toast.makeText(this,
-                        "Merci pour votre commande ! Vous allez être rediriger vers votre compte paypal.",
-                        Toast.LENGTH_LONG).show();
-                enregistrerCommande("PayPal");
-            } else if (selectedId == R.id.radioEspeces) {
-                Toast.makeText(this,
-                        "Merci pour votre commande ! Vous paierez en espèces sur place.",
-                        Toast.LENGTH_LONG).show();
-                enregistrerCommande("Espèces");
+                Intent intent = new Intent(this, PaypalActivity.class);
+                intent.putExtra("utilisateur_id", utilisateurId);
+                intent.putExtra("email", email);
+                intent.putExtra("horaire_id", horaireId);
+                intent.putExtra("restaurant_id", restaurantId);
+                intent.putExtra("nom_restaurant", nomRestaurant);
+                intent.putExtra("date", date);
+                intent.putExtra("heure", heure);
+                intent.putExtra("total", totalPayer);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(this, "Veuillez choisir un mode de paiement", Toast.LENGTH_SHORT).show();
             }
@@ -102,22 +145,24 @@ public class PaymentActivity extends AppCompatActivity {
                     try {
                         JSONObject json = new JSONObject(response);
                         if (json.getBoolean("success")) {
-                            // Message déjà affiché avant
+                            Toast.makeText(this, "Commande enregistrée avec succès !", Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             Toast.makeText(this, "Erreur: " + json.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(this, "Erreur de parsing", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
-                    Toast.makeText(this, "Erreur réseau", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Erreur réseau: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("utilisateur_id", String.valueOf(utilisateurId));
+                params.put("email", email);
                 params.put("restaurant_id", String.valueOf(restaurantId));
                 params.put("horaire_id", String.valueOf(horaireId));
                 params.put("date", date);

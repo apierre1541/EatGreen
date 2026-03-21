@@ -75,7 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Fonctionnalité à venir", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -83,14 +84,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-
-        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                startActivity(intent);
             }
         });
     }
@@ -135,25 +128,52 @@ public class LoginActivity extends AppCompatActivity {
                             if (success) {
                                 JSONObject user = jsonObject.getJSONObject("user");
                                 String role = user.getString("role");
+                                int userId = user.getInt("id");
+                                String userEmail = user.getString("email");
+                                String userNom = user.getString("nom");
+                                String userPrenom = user.getString("prenom");
+                                String userTelephone = user.optString("telephone", "");
 
                                 Log.d(TAG, "Rôle: " + role);
+                                Log.d(TAG, "ID utilisateur: " + userId);
+                                Log.d(TAG, "Email utilisateur: " + userEmail);
 
                                 Toast.makeText(LoginActivity.this,
                                         "Connexion réussie",
                                         Toast.LENGTH_SHORT).show();
 
-                                Intent intent;
+                                SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putInt("user_id", userId);
+                                editor.putString("user_email", userEmail);
+                                editor.putString("user_nom", userNom);
+                                editor.putString("user_prenom", userPrenom);
+                                editor.putString("user_telephone", userTelephone);
+                                editor.apply();
 
+                                // VÉRIFICATION IMMÉDIATE
+                                int savedId = prefs.getInt("user_id", 0);
+                                String savedEmail = prefs.getString("user_email", "");
+                                Log.d(TAG, "=== SAUVEGARDE VÉRIFIÉE ===");
+                                Log.d(TAG, "ID sauvegardé: " + savedId);
+                                Log.d(TAG, "Email sauvegardé: " + savedEmail);
+                                Log.d(TAG, "=========================");
+
+                                // Créer l'intent pour AffichagePanierActivity
+                                Intent panierIntent = new Intent(LoginActivity.this, AffichagePanierActivity.class);
+                                panierIntent.putExtra("UTILISATEUR_ID", userId);
+                                startActivity(panierIntent);
+
+                                // Créer l'intent principal selon le rôle
+                                Intent intent;
                                 switch (role) {
                                     case "restaurateur":
                                         intent = new Intent(LoginActivity.this, RestaurantActivity.class);
-                                        // Passer les infos du restaurateur
-                                        intent.putExtra("user_id", user.getInt("id"));
-                                        intent.putExtra("user_nom", user.getString("nom"));
-                                        intent.putExtra("user_prenom", user.getString("prenom"));
-                                        intent.putExtra("user_email", user.getString("email"));
+                                        intent.putExtra("user_id", userId);
+                                        intent.putExtra("user_nom", userNom);
+                                        intent.putExtra("user_prenom", userPrenom);
+                                        intent.putExtra("user_email", userEmail);
 
-                                        // Passer les infos du restaurant si disponibles
                                         if (user.has("restaurant")) {
                                             JSONObject restaurant = user.getJSONObject("restaurant");
                                             intent.putExtra("restaurant_id", restaurant.getInt("id"));
@@ -167,28 +187,21 @@ public class LoginActivity extends AppCompatActivity {
 
                                     case "admin":
                                         intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                        intent.putExtra("user_id", user.getInt("id"));
-                                        intent.putExtra("user_nom", user.getString("nom"));
-                                        intent.putExtra("user_prenom", user.getString("prenom"));
-                                        intent.putExtra("user_email", user.getString("email"));
+                                        intent.putExtra("user_id", userId);
+                                        intent.putExtra("user_nom", userNom);
+                                        intent.putExtra("user_prenom", userPrenom);
+                                        intent.putExtra("user_email", userEmail);
                                         break;
 
                                     default: // etudiant
                                         intent = new Intent(LoginActivity.this, EtudiantActivity.class);
-                                        intent.putExtra("user_id", user.getInt("id"));
-                                        intent.putExtra("user_nom", user.getString("nom"));
-                                        intent.putExtra("user_prenom", user.getString("prenom"));
-                                        intent.putExtra("user_telephone", user.getString("telephone"));
-                                        intent.putExtra("user_email", user.getString("email"));
+                                        intent.putExtra("user_id", userId);
+                                        intent.putExtra("user_nom", userNom);
+                                        intent.putExtra("user_prenom", userPrenom);
+                                        intent.putExtra("user_telephone", userTelephone);
+                                        intent.putExtra("user_email", userEmail);
                                         break;
                                 }
-
-                                SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                                prefs.edit().putInt("user_id", user.getInt("id")).apply();
-
-                                Intent i = new Intent(LoginActivity.this, AffichagePanierActivity.class);
-                                intent.putExtra("UTILISATEUR_ID", user.getInt("id"));  // ← Nécessaire pour cette activité
-                                startActivity(i);
 
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);

@@ -189,14 +189,6 @@
                 android:padding="12dp"
                 android:buttonTint="#4CAF50"/>
 
-            <RadioButton
-                android:id="@+id/radioEspeces"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Paiement en espèce"
-                android:textSize="16sp"
-                android:padding="12dp"
-                android:buttonTint="#4CAF50"/>
         </RadioGroup>
 
         <!-- Boutons d'action -->

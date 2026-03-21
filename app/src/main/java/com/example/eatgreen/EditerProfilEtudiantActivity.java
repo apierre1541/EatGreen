@@ -33,18 +33,30 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
     private CheckBox cbCB, cbPaypal;
     private Button btnEnregistrer, btnSupprimer;
 
+    // Variables pour stocker les valeurs récupérées de l'Intent
+    private String userNom, userPrenom, userEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editer_profil_etudiant);
 
         initViews();
-        Intent intent = getIntent();
-        etNom.setText(intent.getStringExtra("user_nom"));
-        etPrenom.setText(intent.getStringExtra("user_prenom"));
-        etTelephone.setText(intent.getStringExtra("user_telephone"));
-        etMail.setText(intent.getStringExtra("user_email"));
 
+        // Récupérer les données de l'Intent et les stocker
+        Intent intent = getIntent();
+        userNom = intent.getStringExtra("user_nom");
+        userPrenom = intent.getStringExtra("user_prenom");
+        userEmail = intent.getStringExtra("user_email");
+        String userTelephone = intent.getStringExtra("user_telephone");
+
+        // Afficher les données
+        etNom.setText(userNom);
+        etPrenom.setText(userPrenom);
+        etTelephone.setText(userTelephone);
+        etMail.setText(userEmail);
+
+        // Désactiver les champs non modifiables
         etMail.setEnabled(false);
         etMail.setFocusable(false);
         etNom.setEnabled(false);
@@ -55,6 +67,11 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
         etMail.setTextColor(Color.GRAY);
         etNom.setTextColor(Color.GRAY);
         etPrenom.setTextColor(Color.GRAY);
+
+        // Le téléphone reste modifiable
+        etTelephone.setEnabled(true);
+        etTelephone.setFocusable(true);
+
         setupListeners();
     }
 
@@ -73,7 +90,11 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
 
     private void setupListeners() {
         btnEnregistrer.setOnClickListener(v -> {
-            // On lance d'abord la sauvegarde du profil
+            // Vérifier qu'un mode de paiement est sélectionné
+            if (!cbCB.isChecked() && !cbPaypal.isChecked()) {
+                Toast.makeText(this, "Veuillez choisir un mode de paiement (CB ou PayPal)", Toast.LENGTH_SHORT).show();
+                return;
+            }
             saveProfileToDatabase();
         });
 
@@ -88,15 +109,24 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
     }
 
     private void saveProfileToDatabase() {
-        final String nom = etNom.getText().toString().trim();
-        final String prenom = etPrenom.getText().toString().trim();
+        // Utiliser les variables stockées pour le nom, prénom et email
+        // car les champs sont désactivés
+        final String nom = userNom;
+        final String prenom = userPrenom;
+        final String email = userEmail;
         final String telephone = etTelephone.getText().toString().trim();
-        final String email = etMail.getText().toString().trim();
 
+        // Déterminer le mode de paiement
         String mode = "";
-        if (cbCB.isChecked()) mode = "CB";
-        else if (cbPaypal.isChecked()) mode = "Paypal";
+        if (cbCB.isChecked()) {
+            mode = "CB";
+        } else if (cbPaypal.isChecked()) {
+            mode = "Paypal";
+        }
         final String finalMode = mode;
+
+        // Afficher un message de chargement
+        Toast.makeText(this, "Enregistrement en cours...", Toast.LENGTH_SHORT).show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPDATE_URL,
                 response -> {
@@ -105,30 +135,47 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equals("success")) {
 
-                            // C'EST ICI QUE TOUT SE JOUE :
-                            // Une fois le profil sauvé, on décide où aller
+                            Toast.makeText(this, "Profil mis à jour avec succès", Toast.LENGTH_SHORT).show();
+
+                            // Sauvegarder le mode de paiement dans SharedPreferences
+                            android.content.SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                            android.content.SharedPreferences.Editor editor = prefs.edit();
+
                             if (cbCB.isChecked()) {
+                                editor.putString("mode_paiement", "CB");
+                                editor.apply();
+
+                                // Rediriger vers CbActivity
                                 Intent intent = new Intent(this, CbActivity.class);
-                                intent.putExtra("email", email); // On passe l'email !
+                                intent.putExtra("email", email);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
+
                             } else if (cbPaypal.isChecked()) {
+                                editor.putString("mode_paiement", "Paypal");
+                                editor.apply();
+
+                                // Rediriger vers PaypalActivity
                                 Intent intent = new Intent(this, PaypalActivity.class);
-                                intent.putExtra("email", email); // On passe l'email !
+                                intent.putExtra("email", email);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
-                                finish();
-                            } else {
-                                // Si rien n'est coché, retour à l'accueil
-                                Toast.makeText(this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(this, EtudiantActivity.class));
                                 finish();
                             }
+
+                        } else {
+                            Toast.makeText(this, "Erreur: " + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         Log.e(TAG, "Erreur JSON: " + e.getMessage());
+                        Toast.makeText(this, "Erreur de réponse serveur", Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> Toast.makeText(this, "Erreur réseau", Toast.LENGTH_SHORT).show()) {
+                error -> {
+                    Log.e(TAG, "Erreur réseau: " + error.getMessage());
+                    Toast.makeText(this, "Erreur réseau: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -145,13 +192,26 @@ public class EditerProfilEtudiantActivity extends AppCompatActivity {
     }
 
     private void sendDeleteRequest() {
-        final String email = etMail.getText().toString().trim();
+        final String email = userEmail; // Utiliser l'email stocké
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELETE_REQ_URL,
                 response -> {
-                    Toast.makeText(this, "Demande envoyée", Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.getString("status").equals("success")) {
+                            Toast.makeText(this, "Demande de suppression envoyée avec succès", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Erreur: " + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Erreur JSON: " + e.getMessage());
+                        Toast.makeText(this, "Erreur de réponse", Toast.LENGTH_SHORT).show();
+                    }
                     finish();
                 },
-                error -> Toast.makeText(this, "Erreur réseau", Toast.LENGTH_SHORT).show()) {
+                error -> {
+                    Toast.makeText(this, "Erreur réseau: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

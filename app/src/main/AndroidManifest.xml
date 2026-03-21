@@ -71,6 +71,7 @@
         <activity android:name=".PreferencesAlimentairesActivity" />
         <activity android:name=".IntolerancesActivity" />
         <activity android:name=".AllergiesActivity" />
+        <activity android:name=".CbCommandeActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
