@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral99">
+
+    <RelativeLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Titre "Tableau de bord" -->
+        <TextView
+            android:id="@+id/t1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:text="Tableau de bord"
+            android:textAlignment="center"
+            android:textColor="#7fa513"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Première image -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/t1"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/image_suite"
+            android:orientation="horizontal"
+            android:padding="30dp" />
+
+        <!-- Texte de bienvenue -->
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="aptos"
+            android:text=""
+            android:textColor="#7fa513"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <!-- Image avec bouton "Gérer les paniers" -->
+        <FrameLayout
+            android:id="@+id/frame_gerer_paniers"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/t2"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icone"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+            <Button
+                android:id="@+id/b1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gérer les paniers"
+                android:layout_gravity="bottom"
+                android:backgroundTint="#4CAF50"
+                android:alpha="0.9"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Section Historique -->
+        <LinearLayout
+            android:id="@+id/header3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame_gerer_paniers"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Ligne avec image et texte -->
+            <LinearLayout
+                android:id="@+id/header6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/historique_payment"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_marginEnd="12dp" />
+
+                <TextView
+                    android:id="@+id/t3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="aptos"
+                    android:text="Historique des paniers"
+                    android:textColor="#7fa513"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/i1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="2dp"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/back_droite"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+
+            <!-- Date -->
+            <TextView
+                android:id="@+id/t4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="aptos"
+                android:text="Lundi 16 mars"
+                android:textColor="#666666"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Section image + description -->
+            <LinearLayout
+                android:id="@+id/header4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingStart="0dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/icone_suite"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:text="Description de l'image"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="start"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Référence pour le bas -->
+        <View
+            android:id="@+id/bottom_reference"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/header3"
+            android:layout_alignParentBottom="true" />
+
+        <!-- Barre de navigation en bas -->
+        <LinearLayout
+            android:id="@+id/header5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-30dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="4"
+            android:elevation="4dp"
+            android:background="@android:color/white">
+
+            <ImageButton
+                android:id="@+id/b2"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/tableau_de_bord"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Tableau de bord" />
+
+            <ImageButton
+                android:id="@+id/b3"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/panier_1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Panier" />
+
+            <ImageButton
+                android:id="@+id/b4"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/statistique"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Statistiques" />
+
+            <ImageButton
+                android:id="@+id/b5"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/profil"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:contentDescription="Profil" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

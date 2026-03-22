@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="Accueil" />
+    <item
+        android:id="@+id/navigation_restaurants"
+        android:icon="@drawable/ic_restaurant"
+        android:title="Restaurants" />
+    <item
+        android:id="@+id/navigation_compost"
+        android:icon="@drawable/ic_compost"
+        android:title="Compost" />
+    <item
+        android:id="@+id/navigation_unilimbio"
+        android:icon="@drawable/ic_programme"
+        android:title="UnilimBio" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_person"
+        android:title="Profil" />
+</menu>

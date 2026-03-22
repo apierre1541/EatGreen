@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_centerVertical="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <CheckBox
+                android:id="@+id/vegetarien"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Végétarien"
+                android:paddingStart="8dp"
+                android:layout_marginBottom="10dp" />
+
+            <CheckBox
+                android:id="@+id/vegan"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Végan"
+                android:paddingStart="8dp"
+                android:layout_marginBottom="10dp" />
+
+            <CheckBox
+                android:id="@+id/allergie"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Allergies"
+                android:paddingStart="8dp"
+                android:layout_marginBottom="10dp" />
+
+            <CheckBox
+                android:id="@+id/intolerance"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Intolérances"
+                android:paddingStart="8dp"
+                android:layout_marginBottom="20dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnPreferencesAlimentaires"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enregistrer vos préférences alimentaires" />
+
+    </LinearLayout>
+</RelativeLayout>

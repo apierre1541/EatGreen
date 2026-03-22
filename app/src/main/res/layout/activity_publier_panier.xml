@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_centerVertical="true">
+        <EditText
+            android:id="@+id/titre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Entrer le nom du plat"
+            android:inputType="text"
+            android:layout_marginTop="16dp"/>
+        <Button
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choisir une photo"/>
+        <EditText
+            android:id="@+id/condition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ajouter les conditions du repas"
+            android:inputType="text"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/quantite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ajouter nombr de personne qui peut reservez ce repas"
+            android:inputType="number"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/prix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ajouter le prix du panier repas"
+            android:inputType="number"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/adresse_postal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ajouter l'adresse postal"
+            android:inputType="text"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/code_postal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ajouter le code postal"
+            android:inputType="number"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/commune"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Ajouter la commune"
+            android:inputType="text" />
+        <Button
+            android:id="@+id/b7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ajouter la date et les horaires" />
+    </LinearLayout>
+</RelativeLayout>

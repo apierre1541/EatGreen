@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vos intolérances"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sélectionnez vos intolérances (plusieurs choix possibles)"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/intolerance_lactose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lactose"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/intolerance_gluten"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gluten"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/intolerance_fructose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fructose"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <CheckBox
+                android:id="@+id/intolerance_histamine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Histamine"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/autre_intolerance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Autre intolérance (précisez)"
+                android:padding="12dp"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_enregistrer_intolerances"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enregistrer vos intolérances"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

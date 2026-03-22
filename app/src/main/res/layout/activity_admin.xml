@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenue"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btnPotager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Potager + cours jardinage"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnStatsGlobales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Les statistiques globales"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnEditerProfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editer profil"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnGestionUtilisateurs"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Gestion des utilisateurs"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inscrit cours jardinage"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+    <Button
+        android:id="@+id/b8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ajout des points de composte"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnDeconnexion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Déconnecter"
+        android:backgroundTint="#FF5252"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

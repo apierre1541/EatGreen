@@ -1,34 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/fond">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.EatGreen.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <!-- ESPACE EN HAUT (30% de l'espace) -->
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.EatGreen.PopupOverlay" />
+            android:layout_height="0dp"
+            android:layout_weight="3" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <!-- LOGO -->
+        <ImageView
+            android:id="@+id/t1"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/logo_eatgreen" />
 
-    <include layout="@layout/content_main" />
+        <!-- PETIT ESPACE ENTRE LOGO ET SLOGAN -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <!-- SLOGAN -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="aptos"
+            android:text="Réduis ton empreinte carbone, mais pas ton appétit !"
+            android:textAlignment="center"
+            android:textColor="#7fa513"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="24" />
+
+        <!-- BOUTON - EN BAS MAIS PAS TROP -->
+        <Button
+            android:id="@+id/commencer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FB1CE725"
+            android:gravity="center"
+            android:text="Commencer"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:iconTint="#4CAF50" />
+
+        <!-- PETIT ESPACE EN BAS (30% de l'espace) -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
+
+    </LinearLayout>
+
+</RelativeLayout>
