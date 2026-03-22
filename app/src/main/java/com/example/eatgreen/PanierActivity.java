@@ -80,7 +80,7 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void chargerPanier() {
-        String url = "http://192.168.1.40/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -165,7 +165,7 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void retirerArticle(int articleId) {
-        String url = "http://192.168.1.40/eatgreen_api/retirer_panier.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/retirer_panier.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

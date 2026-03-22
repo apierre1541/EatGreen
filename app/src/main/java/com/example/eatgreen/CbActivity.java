@@ -30,7 +30,7 @@ public class CbActivity extends AppCompatActivity {
 
     private String email;
 
-    private static final String SAVE_CB_URL = "http://192.168.1.40/eatgreen_api/save_cb.php";
+    private static final String SAVE_CB_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/save_cb.php";
 
     @SuppressLint("MissingInflatedId")
     @Override

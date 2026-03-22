@@ -74,7 +74,7 @@ public class ListeInscritCoursJardinageActivity extends AppCompatActivity {
      * Charge TOUS les cours avec leurs inscrits
      */
     private void chargerTousLesCours() {
-        String url = "http://192.168.1.40/eatgreen_api/get_inscrits_par_cours.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/get_inscrits_par_cours.php";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {

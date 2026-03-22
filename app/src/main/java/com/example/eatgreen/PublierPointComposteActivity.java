@@ -114,7 +114,7 @@ public class PublierPointComposteActivity extends AppCompatActivity {
 
         JSONObject jsonRequest = new JSONObject(params);
 
-        String url = "http://192.168.1.40/eatgreen_api/ajouter_point.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/ajouter_point.php";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonRequest,
                 response -> {

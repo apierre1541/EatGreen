@@ -109,7 +109,7 @@ public class Potager_coursJardinageActivity extends AppCompatActivity {
      * Charge les événements depuis la BDD pour une date spécifique
      */
     private void chargerEvenementsDepuisBDD(int jour, int mois, int annee) {
-        String url = "http://192.168.1.40/eatgreen_api/get_evenement_par_date.php?jour=" + jour +
+        String url = "http://1eatgreen.alwaysdata.net/eatgreen_api/get_evenement_par_date.php?jour=" + jour +
                 "&mois=" + mois + "&annee=" + annee;
 
         com.android.volley.RequestQueue requestQueue = com.android.volley.toolbox.Volley.newRequestQueue(this);

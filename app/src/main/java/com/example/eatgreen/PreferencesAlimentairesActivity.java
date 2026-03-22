@@ -92,7 +92,7 @@ public class PreferencesAlimentairesActivity extends AppCompatActivity {
         editor.apply();
 
         // Envoyer au serveur
-        String url = "http://192.168.1.40/eatgreen_api/enregistrer_preferences.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/enregistrer_preferences.php";
 
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", userId);

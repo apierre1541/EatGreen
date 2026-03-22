@@ -39,8 +39,8 @@ public class CbCommandeActivity extends AppCompatActivity {
     private String email;
     private String nomRestaurant;
 
-    private static final String SAVE_CB_URL = "http://192.168.1.40/eatgreen_api/save_cb.php";
-    private static final String CREER_COMMANDE_URL = "http://192.168.1.40/eatgreen_api/creer_commande.php";
+    private static final String SAVE_CB_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/save_cb.php";
+    private static final String CREER_COMMANDE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/creer_commande.php";
 
     @SuppressLint("MissingInflatedId")
     @Override

@@ -138,7 +138,7 @@ public class Inscription_coursJardinageActivity extends AppCompatActivity {
     }
 
     private void verifierInscription(int evenementId, TextView tvStatut, Button btnInscrire) {
-        String url = "http://192.168.1.40/eatgreen_api/verifier_inscription.php?evenement_id=" + evenementId + "&user_id=" + utilisateurId;
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/verifier_inscription.php?evenement_id=" + evenementId + "&user_id=" + utilisateurId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
@@ -163,7 +163,7 @@ public class Inscription_coursJardinageActivity extends AppCompatActivity {
     }
 
     private void inscrireUtilisateur(int evenementId, String heure, String titre, TextView tvStatut, Button btnInscrire) {
-        String url = "http://192.168.1.40/eatgreen_api/inscrire_cours.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/inscrire_cours.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

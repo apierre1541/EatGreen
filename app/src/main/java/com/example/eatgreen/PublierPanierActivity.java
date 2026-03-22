@@ -135,7 +135,7 @@ public class PublierPanierActivity extends AppCompatActivity {
                     RequestBody requestBody = builder.build();
 
                     Request request = new Request.Builder()
-                            .url("http://192.168.1.40/eatgreen_api/panier_repas.php")
+                            .url("http://eatgreen.alwaysdata.net/eatgreen_api/panier_repas.php")
                             .post(requestBody)
                             .build();
 

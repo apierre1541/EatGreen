@@ -49,9 +49,9 @@ public class CalendrierFragment extends Fragment {
     private int moisActuel;
 
     // URLs API
-    private static final String GET_EVENTS_URL = "http://192.168.1.40/eatgreen_api/get_evenement.php";
-    private static final String GET_DATES_VERTES_URL = "http://192.168.1.40/eatgreen_api/get_dates_vertes.php";
-    private static final String AJOUTER_DATE_VERTE_URL = "http://192.168.1.40/eatgreen_api/ajouter_date_verte.php";
+    private static final String GET_EVENTS_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/get_evenement.php";
+    private static final String GET_DATES_VERTES_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/get_dates_vertes.php";
+    private static final String AJOUTER_DATE_VERTE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/ajouter_date_verte.php";
 
     // Variables
     private Set<String> datesEnVert = new HashSet<>();

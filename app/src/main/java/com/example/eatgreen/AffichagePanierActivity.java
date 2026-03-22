@@ -95,7 +95,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
     }
 
     private void chargerPlats() {
-        String url = "http://192.168.1.40/eatgreen_api/get_panier_repas.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/get_panier_repas.php";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
@@ -131,7 +131,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
     private void getPanierDepuisServeur() {
-        String url = "http://192.168.1.40/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/get_panier.php?users_id=" + utilisateurId;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -206,7 +206,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
                 // Gérer la photo
                 if (tvPhoto != null) {
                     if (plat.photo != null && !plat.photo.isEmpty()) {
-                        String imageUrl = "http://10.138.3.92/eatgreen_api/uploads/" + plat.photo;
+                        String imageUrl = "http://eatgreen.alwaysdata.net/eatgreen_api/uploads/" + plat.photo;
                         Glide.with(this)
                                 .load(imageUrl)
                                 .placeholder(R.drawable.ic_menu_camera)
@@ -267,7 +267,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
     }
 
     private void ajouterAuPanier(int platId, int quantite, Button btn, String nomPlat) {
-        String url = "http://192.168.1.40/eatgreen_api/ajouter_panier.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/ajouter_panier.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
@@ -330,7 +330,7 @@ public class AffichagePanierActivity extends AppCompatActivity {
     }
 
     private void retirerDuPanier(int articleId, Button btn, String nomPlat) {
-        String url = "http://192.168.1.40/eatgreen_api/retirer_panier.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/retirer_panier.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

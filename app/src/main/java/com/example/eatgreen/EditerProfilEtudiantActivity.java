@@ -25,7 +25,7 @@ import java.util.Map;
 public class EditerProfilEtudiantActivity extends AppCompatActivity {
 
     private static final String TAG = "EditerProfilEtudiant";
-    private static final String BASE_URL = "http://192.168.1.40/eatgreen_api/";
+    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
     private static final String UPDATE_URL = BASE_URL + "update_profile.php";
     private static final String DELETE_REQ_URL = BASE_URL + "request_delete.php";
 

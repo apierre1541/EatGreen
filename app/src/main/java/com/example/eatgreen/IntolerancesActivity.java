@@ -80,7 +80,7 @@ public class IntolerancesActivity extends AppCompatActivity {
         editor.putString("intolerance_autre", autre);
         editor.apply();
 
-        String url = "http://192.168.1.40/eatgreen_api/enregistrer_intolerances.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/enregistrer_intolerances.php";
 
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", userId);

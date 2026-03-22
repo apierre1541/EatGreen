@@ -32,7 +32,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private String token;
 
-    private static final String BASE_URL = "http://192.168.1.40/eatgreen_api/";
+    private static final String BASE_URL = "http://eatgreen.alwaysdata.net/eatgreen_api/";
     private static final String RESET_PASSWORD_URL = BASE_URL + "reset_password.php";
     private static final String TAG = "ResetPasswordActivity";
 

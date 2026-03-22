@@ -131,7 +131,7 @@ public class MapComposteActivity extends AppCompatActivity {
     }
 
     private void chargerPointsDepuisServeur() {
-        String url = "http://192.168.1.40/eatgreen_api/get_points.php";
+        String url = "http://eatgreen.alwaysdata.net/eatgreen_api/get_points.php";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
