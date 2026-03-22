@@ -5,10 +5,10 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$host = "localhost";
-$dbname = "eatgreen_db";
-$username = "root";
-$password = "";
+$host = "mysql-eatgreen.alwaysdata.net";
+$dbname = "eatgreen_php";
+$username = "eatgreen";
+$password = "EatGreen@1541";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
